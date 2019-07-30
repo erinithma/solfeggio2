@@ -3,13 +3,29 @@ import styled from 'styled-components';
 import { smWidth, mdWidth, lgWidth, xlWidth } from '../../common';
 import { connect } from 'react-redux';
 
-class Menu extends React.Component {
+class VkWidget extends React.Component {
 
     componentDidMount() {
-        let s = document.createElement("script");
+        let s = document.createElement(`script`);
+        s.id="vks";
         s.textContent = `VK.Widgets.Group("vk_groups", {mode: 3}, 171372561);`;
         document.body.appendChild(s);
     }
+
+    componentWillUnmount() {
+        $("#vks").remove();        
+    }
+
+    render() {
+        return (
+            <div id="vk">
+                <div id="vk_groups"></div>
+            </div>
+        )
+    }
+}
+
+class Menu extends React.Component {
 
     render() {
         const {className, size} = this.props;
@@ -33,9 +49,7 @@ class Menu extends React.Component {
                     </div> 
                     <br/>
                     <br/>
-                    <div id="vk">
-                        <div id="vk_groups"></div>
-                    </div>
+                    <VkWidget/>
                 </div>
             :
                 ''
