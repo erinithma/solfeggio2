@@ -8,7 +8,7 @@ class VkWidget extends React.Component {
     componentDidMount() {
         let s = document.createElement(`script`);
         s.id="vks";
-        s.textContent = `VK.Widgets.Group("vk_groups", {mode: 3}, 171372561);`;
+        s.textContent = `VK.Widgets.Group("vk_groups", {mode: 1}, 171372561);`;
         document.body.appendChild(s);
     }
 
