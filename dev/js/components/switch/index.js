@@ -8,7 +8,7 @@ class Menu extends React.Component {
         const {className, size} = this.props;
 
         return (
-            size === "xl+" ? 
+            size === "xl+" || size === "xl" || size === "lg" ? 
                 <div className={`list ${className}`}>
                     <a onClick={(e) => e.preventDefault()} href="/тренажер/игра">Игра</a>
                     <a onClick={(e) => e.preventDefault()} href="/тренажер/мажор-минор">Мажор / минор</a>
@@ -40,18 +40,12 @@ export default styled(ConnectedMenu)`
         width: 180px;
     }
     @media (max-width: ${xlWidth-1}px){
-        top: 150px;
+        top: 100px;
         right: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        width: 180px;
     }
     @media (max-width: ${mdWidth-1}px){
         top: 180px;
-    }
-    @media (max-width: ${smWidth-1}px){
-        top: 220px;
-        right: 20px;
+        right: 0;
     }
 `;
