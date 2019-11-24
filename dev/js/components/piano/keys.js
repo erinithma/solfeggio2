@@ -25,7 +25,7 @@ class Key extends React.Component{
         const spinner = loaded <= index ? <Spinner /> : null;
 
         return detectTouch() ? 
-            <div className={`${className} note`} onTouchStart={this.onDown} onTouchEnd={this.onUp}>{child}{children}{spinner}</div>
+            <div className={`${className} note`} onTouchStart={this.onDown} onTouchCancel={this.onUp} onTouchEnd={this.onUp}>{child}{children}{spinner}</div>
             : 
             <div className={`${className} note`} onMouseDown={this.onDown} onMouseUp={this.onUp}>{child}{children}{spinner}</div>
     }
