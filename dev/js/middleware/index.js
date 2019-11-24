@@ -1,7 +1,8 @@
 import a from '../const'
-import {fill, getSize, timeout} from '../common';
+import {timeout} from '../common';
 import Sound from '../classes/sound';
-const sound = new Sound();
+
+window.sound = new Sound();
 
 let resultTimeout = null, offsetTimeout = null;
 

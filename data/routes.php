@@ -9,6 +9,10 @@
             "controller" => "TrainingController"
         ],
         [
+            "path" => "/тренажер/",
+            "controller" => "TrainingController"
+        ],
+        [
             "path" => "/тренажер/игра",
             "controller" => "TrainingController"
         ],

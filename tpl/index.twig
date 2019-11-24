@@ -16,9 +16,18 @@
                 <p><b>Сольфеджио.Онлайн</b> &ndash; бесплатный онлайн-тренажер для занятий сольфеджио.</p>
                 <p>Если Вы интересуетесь музыкой, но у Вас нет времени или денег на занятия с преподавателем сольфеджио, то наш тренажер для Вас.</p>
                 <p><b>Сольфеджио.Онлайн</b> предоставляет виртуальное фортепиано на 5 октав, на котором можно играть, кликая мышкой или нажимая клавиши на клавиатуре компьютера.</p>
-                <p>Для занятий сольфеджио мы предоставляем следующие тренажеры:</p>
+                <p>Для занятий сольфеджио мы предоставляем следующие возможности:</p>
             </div>
-            <div style="margin-left: 20px">
+            <style scoped>
+                @media (max-width: 600px) {
+                    #vk {
+                        visibility: hidden;
+                        width: 0px;
+                        margin-left: 0px;
+                    }
+                }
+            </style>
+            <div id="vk" style="margin-left: 20px">
                 <script type="text/javascript" src="https://vk.com/js/api/openapi.js?159"></script>
                 <!-- VK Widget -->
                 <div id="vk_groups"></div>
@@ -29,7 +38,7 @@
         </div>
         
         <hr>
-        <div id="mode"> 
+        <div> 
             <div class="grid">
                 <div class="item">
                     <a class="item__content" href="/тренажер/игра">

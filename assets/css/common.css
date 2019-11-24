@@ -153,6 +153,13 @@ h3 {
 }
 #piano {
   position: relative;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+#mode {
+  min-height: 560px;
 }
 .vk {
   position: absolute;
@@ -274,6 +281,8 @@ h3 {
   -webkit-box-flex: 0;
       -ms-flex-positive: 0;
           flex-grow: 0;
+  position: relative;
+  z-index: 100;
 }
 .grid {
   display: -webkit-box;
