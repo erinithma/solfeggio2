@@ -5,38 +5,37 @@ import {detectTouch} from '../../common';
 import styled from 'styled-components';
 import { ClipLoader as Loader } from 'react-spinners';
 
-const Spinner = styled(({className}) => {
-    return <div className={className}><Loader
-        sizeUnit={"px"}
-        size={12}
-        color={'#ccc'}
-        loading={true}
-    /></div>
-})`
+const Spinner = styled(({className}) => (
+    <div className={className}>
+        <Loader
+            sizeUnit={"px"}
+            size={12}
+            color={'#ccc'}
+            loading={true}
+        />
+    </div>
+))`
     display: flex;
     bottom: 4px;
     overflow: hidden;
     position: absolute;
 `;
 
-class Key extends React.Component{
-    render() {
-        const {className, children, child, index, loaded} = this.props;
-        const spinner = loaded <= index ? <Spinner /> : null;
+const Key = ({className, children, child, index, loaded, down, up}) => {
+    const spinner = loaded <= index ? <Spinner /> : null;
 
-        return detectTouch() ? 
-            <div className={`${className} note`} onTouchStart={this.onDown} onTouchCancel={this.onUp} onTouchEnd={this.onUp}>{child}{children}{spinner}</div>
-            : 
-            <div className={`${className} note`} onMouseDown={this.onDown} onMouseUp={this.onUp}>{child}{children}{spinner}</div>
+    const onDown = () => {
+        down(index);
     }
 
-    onDown = () => {
-        this.props.down(this.props.index);
+    const onUp = () => {
+        up(index);
     }
 
-    onUp = () => {
-        this.props.up(this.props.index);
-    }
+    return detectTouch() ? 
+        <div className={`${className} note`} onTouchStart={onDown} onTouchCancel={onUp} onTouchEnd={onUp}>{child}{children}{spinner}</div>
+        : 
+        <div className={`${className} note`} onMouseDown={onDown} onMouseUp={onUp}>{child}{children}{spinner}</div>
 }
 
 function connectWith(component){
