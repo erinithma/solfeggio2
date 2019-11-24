@@ -5,7 +5,7 @@ import store from './store'
 import theme from './theme';
 import {ThemeProvider} from 'styled-components';
 import Piano from './components/piano';
-import Menu from './components/switch';
+import Menu from './components/menu';
 
 ReactDOM.render(
   <Provider store={store}>
