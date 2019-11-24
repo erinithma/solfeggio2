@@ -16,6 +16,7 @@ module.exports = {
     entry: {
         piano: path.join(__dirname, 'js', 'piano.js'),
         common: path.join(__dirname, 'js', 'menu.js'),
+        jquery: path.join(__dirname, 'js', 'jquery.js'),
     },
     output: {
         path: path.join(__dirname, "..", 'assets'),

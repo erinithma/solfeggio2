@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 $("body").on("click", ".menu", function (e) {
     e.preventDefault();
     e.stopPropagation();

@@ -25,37 +25,35 @@ class VkWidget extends React.Component {
     }
 }
 
-class Menu extends React.Component {
+function preventDefault(e) {
+    e.preventDefault();
+}
 
-    render() {
-        const {className, size} = this.props;
+const Menu = ({className, size}) => (
+    size === "xl+" || size === "xl" || size === "lg" ? 
+        <div className={className}>
+            <div className={`list`}>
+                <a onClick={preventDefault} href="/тренажер/игра">Игра</a>
+                <a onClick={preventDefault} href="/тренажер/мажор-минор">Мажор / минор</a>
+                <a onClick={preventDefault} href="/тренажер/ноты">Ноты</a>
+                <a onClick={preventDefault} href="/тренажер/интервалы">Интервалы</a>
+                <a onClick={preventDefault} href="/тренажер/трезвучия">Трезвучия</a>
+                <a onClick={preventDefault} href="/тренажер/диктант">Диктант</a>
+            </div> 
+            <br/>
+            <br/>
+            <div className={`list`}>
+                <a href="/donation">Помощь сайту</a>
+                <a href="/книги">Онлайн книги</a>
+            </div> 
+            <br/>
+            <br/>
+            <VkWidget/>
+        </div>
+    :
+        ''
+);
 
-        return (
-            size === "xl+" || size === "xl" || size === "lg" ? 
-                <div className={className}>
-                    <div className={`list`}>
-                        <a onClick={(e) => e.preventDefault()} href="/тренажер/игра">Игра</a>
-                        <a onClick={(e) => e.preventDefault()} href="/тренажер/мажор-минор">Мажор / минор</a>
-                        <a onClick={(e) => e.preventDefault()} href="/тренажер/ноты">Ноты</a>
-                        <a onClick={(e) => e.preventDefault()} href="/тренажер/интервалы">Интервалы</a>
-                        <a onClick={(e) => e.preventDefault()} href="/тренажер/трезвучия">Трезвучия</a>
-                        <a onClick={(e) => e.preventDefault()} href="/тренажер/диктант">Диктант</a>
-                    </div> 
-                    <br/>
-                    <br/>
-                    <div className={`list`}>
-                        <a href="/donation">Помощь сайту</a>
-                        <a href="/книги">Онлайн книги</a>
-                    </div> 
-                    <br/>
-                    <br/>
-                    <VkWidget/>
-                </div>
-            :
-                ''
-        );
-    }
-} 
 
 const ConnectedMenu = connect(
     (state) => (
