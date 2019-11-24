@@ -65,6 +65,7 @@ const ConnectedMenu = connect(
 
 export default styled(ConnectedMenu)`
     position: absolute;
+    z-index: 2;
 
     @media (min-width: ${xlWidth}px){
         top: 20px;
