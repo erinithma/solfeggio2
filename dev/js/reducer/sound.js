@@ -13,7 +13,11 @@ const Sound = Record({
     counter: 0,
     offset: getOffset(2),
     tempOffset: null,
-    loaded: 0
+    loaded: 0,
+    mode: 'play',
+    showSettings: false,
+    step: 0,
+    totalSteps: 100,
 });
 
 function getOffset(index) {
@@ -80,24 +84,34 @@ export default (sound = new Sound(), action) => {
 
         case a.SET_MODE:
             return sound
-                .set("total", null);
+                .set("total", null)
+                .set("mode", payload.mode);
 
         case a.MODE_SHOW_RESULT:
-            return sound.set("result", sound.get("mode").getResult());
+            return sound.set("result", payload.result);
         
         case a.MODE_HIDE_RESULT:
             return sound.set("result", null);
 
+        case a.MODE_SHOW_SETTINGS:
+            return sound.set("showSettings", true);
+
+        case a.MODE_HIDE_SETTINGS:
+            return sound.set("showSettings", false);
+
         case a.MODE_SHOW_TOTAL:
             return sound.set("total", payload.result);
-        
+
+        case a.MODE_SET_RESULT:
+            return sound.set("result", payload.result);
+
         case a.MODE_HIDE_TOTAL:
             return sound.set("total", null);
 
         case a.MODE_COUNT:
             return sound.set("counter", payload.count);
 
-        case a.SCROLL_TEMP:
+        case a.SET_SCROLL:
             return sound.set("tempOffset", payload.value);
 
         case a.CLEAR_SCROLL:

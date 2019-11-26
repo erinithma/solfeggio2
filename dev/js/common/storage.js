@@ -19,7 +19,7 @@ function get(mode = null){
         return json.common;
     }
     else if(typeof mode === "string"){
-        return json.modes[mode];
+        return json.modes[mode] || {};
     }
     throw "invalid argument 'mode'";
 }

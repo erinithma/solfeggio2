@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import {connect} from 'react-redux';
 
 const transformSize = (size) => {
     switch(typeof size){
@@ -46,17 +47,76 @@ export const PianoLike = ({className, children}) => {
     )
 };
 
-export const Button = styled(({className, children, id, onClick = () => {}, type = 'default', primary, success, danger}) => {
+export const Button = styled(({className, children, id, onClick = () => {}, type = 'default', primary, success, danger, icon}) => {
     const map = {
         primary: 'button--primary',
         success: 'button--success',
         danger: 'button--danger'
     }
     const typeClass = map[type] || (primary ? map['primary'] : success ? map['success'] : danger ? map['danger'] : '');
+    const iconSpan = icon ? <span className={`icon-${icon}`}/> : null;
 
     return (
-        <button id={id} className={`button ${typeClass} ${className}`} onClick={onClick}>{children}</button>
+        <button id={id} className={`button ${typeClass} ${className}`} onClick={onClick}>{iconSpan}{children}</button>
     )
 })`
     ${props => getMargin(props)}
 `;
+
+const Settings = styled(({className, children, id, onClick = () => {}, type = 'default', primary, success, danger, step, totalSteps, showSettings}) => {
+  const map = {
+    primary: 'button--primary',
+    success: 'button--success',
+    danger: 'button--danger'
+  }
+  const typeClass = map[type] || (primary ? map['primary'] : success ? map['success'] : danger ? map['danger'] : '');
+  const iconSpan = <span className={`icon-settings`} style={{marginLeft: 6}}/>;
+
+  return (
+    <button id={id} className={`button ${typeClass} ${className}`} onClick={showSettings}>{step} / {totalSteps} {iconSpan}</button>
+  )
+})`
+    ${props => getMargin(props)}
+`;
+
+export const SettingsButton = connect(state => ({
+    step: state.sound.step,
+    totalSteps: state.sound.totalSteps
+}), (dispatch) => ({
+  showSettings: () => dispatch({
+    type: 'MODE_SHOW_SETTINGS'
+  })
+}))(Settings);
+
+const HideSettings = styled(({className, children, id, onClick = () => {}, type = 'default', primary, success, danger, hideSettings}) => {
+  const map = {
+    primary: 'button--primary',
+    success: 'button--success',
+    danger: 'button--danger'
+  }
+  const typeClass = map[type] || (primary ? map['primary'] : success ? map['success'] : danger ? map['danger'] : '');
+  const iconSpan = <span className={`icon-cancel`} style={{marginLeft: 6}}/>;
+
+  return (
+    <button id={id} className={`button ${typeClass} ${className}`} onClick={hideSettings}>{iconSpan} Отменить</button>
+  )
+})`
+    ${props => getMargin(props)}
+`;
+
+export const HideSettingsButton = connect(state => ({
+  step: state.sound.step,
+  totalSteps: state.sound.totalSteps
+}), (dispatch) => ({
+  hideSettings: () => {
+      dispatch({
+        type: 'MODE_HIDE_SETTINGS'
+      });
+      dispatch({
+        type: 'MODE_SET_RESULT',
+        payload: {
+          result: null
+        }
+      })
+    }
+}))(HideSettings);

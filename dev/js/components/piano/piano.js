@@ -18,8 +18,13 @@ const workPlace = {
 		'H' : 8,
 		'N' : 9,
 		'J' : 10,
-        'M' : 11
-    }
+    'M' : 11
+  },
+  modes: {
+    play: "Игра",
+    note: 'Угадай ноту',
+    mindur: 'Мажор / минор',
+  }
 };
 
 class Piano extends React.Component{
@@ -113,10 +118,16 @@ class Piano extends React.Component{
     }
 
     render(){
-        const {tempOffset, offset, currentOctave} = this.props;
+        const {tempOffset, offset, currentOctave, mode, size} = this.props;
 
         return (
             <React.Fragment>
+                {
+                   (size === "sm" || size === "md") &&
+                    <PianoLike>
+                        <h1 style={{margin: 0}}>{workPlace.modes[mode]}</h1>
+                    </PianoLike>
+                }
                 <div className="piano-wrap">
                     <div className="piano-wrap__scroll-area" style={{left: tempOffset !== null ? tempOffset : offset}}>
                         <div className="piano-titles">
@@ -148,7 +159,8 @@ export default connect(
         lastTouchIndex: state.sound.get("lastTouchIndex"),
         size: state.sound.get("size"),
         offset: state.sound.get("offset"),
-        tempOffset: state.sound.get("tempOffset")
+        tempOffset: state.sound.get("tempOffset"),
+        mode: state.sound.mode,
     }),
     (dispatch) => ({
         loadSound: () => dispatch({

@@ -21,7 +21,7 @@ const Spinner = styled(({className}) => (
     position: absolute;
 `;
 
-const Key = ({className, children, child, index, loaded, down, up}) => {
+const Key = ({className, children, index, loaded, down, up, color}) => {
     const spinner = loaded <= index ? <Spinner /> : null;
 
     const onDown = () => {
@@ -32,10 +32,10 @@ const Key = ({className, children, child, index, loaded, down, up}) => {
         up(index);
     }
 
-    return detectTouch() ? 
-        <div className={`${className} note`} onTouchStart={onDown} onTouchCancel={onUp} onTouchEnd={onUp}>{child}{children}{spinner}</div>
+    return detectTouch() ?
+        <div className={`${className} note`} onTouchStart={onDown} onTouchCancel={onUp} onTouchEnd={onUp}>{children}{spinner}</div>
         : 
-        <div className={`${className} note`} onMouseDown={onDown} onMouseUp={onUp}>{child}{children}{spinner}</div>
+        <div className={`${className} note`} onMouseDown={onDown} onMouseUp={onUp}>{children}{spinner}</div>
 }
 
 function connectWith(component){
@@ -45,8 +45,8 @@ function connectWith(component){
             pressed: state.sound.get("pressedKeys")[ownProps.index],
             lastTouchIndex: state.sound.get("lastTouchIndex"),
             loaded: state.sound.get("loaded"),
-            color: state.sound.get("result") ? state.sound.get("result").colors[ownProps.index] : null,
-            child: state.sound.get("result") && state.sound.get("result").children ? state.sound.get("result").children[ownProps.index] : null,
+            color: state.sound.get("result") ? state.sound.get("result")[ownProps.index] : null,
+            isTouch: detectTouch(),
         }),
         (dispatch) => (
         { 
@@ -85,13 +85,14 @@ const BlackKey = styled(Key)`
     height: 65%;
   
     &:hover {
-        ${props => `background-color: ${props.theme.blacks[1]};`}
+        ${props => !props.isTouch && `background-color: ${props.theme.blacks[1]};`}
     }
   
     ${props => 
         props.color === 'red' ? `background-color: ${props.theme.dangerDark} !important;` : 
         props.color === 'green' ? `background-color: ${props.theme.successDark} !important;` :
-        props.color === 'yellow' ? `background-color: ${props.theme.yellowDark} !important;` : ''
+        props.color === 'yellow' ? `background-color: ${props.theme.yellowDark} !important;` : 
+        props.color === 'blue' ? `background-color: ${props.theme.primaryDark} !important;` : ''
     }
 
     ${props => 
@@ -120,13 +121,14 @@ const WhiteKey = styled(Key)`
     width: 100%;
 
     &:hover {
-        ${props => `background-color: ${props.theme.whites[1]};`}
+        ${props => !props.isTouch && `background-color: ${props.theme.whites[1]};`}
     }
 
     ${props => 
         props.color === 'red' ? `background-color: ${props.theme.danger} !important;` : 
         props.color === 'green' ? `background-color: ${props.theme.success} !important;` :
-        props.color === 'yellow' ? `background-color: ${props.theme.yellow} !important;` : ''
+        props.color === 'yellow' ? `background-color: ${props.theme.yellow} !important;` : 
+        props.color === 'blue' ? `background-color: ${props.theme.primary} !important;` : ''          
     }
 
     ${props => 

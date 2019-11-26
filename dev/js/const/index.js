@@ -13,12 +13,16 @@ let c = {
     MODE_UPDATE: '',
     MODE_SHOW_RESULT: '',
     MODE_HIDE_RESULT: '',
+    MODE_SHOW_SETTINGS: '',
+    MODE_HIDE_SETTINGS: '',
     MODE_COUNT: '',
     MODE_SHOW_TOTAL: '',
     MODE_HIDE_TOTAL: '',
-    SCROLL_TEMP: '',
+    SET_SCROLL: '',
     CLEAR_SCROLL: '',
-    PROGRESS: ''
+    PROGRESS: '',
+    MODE_SET_RESULT: '',
+    SAVE_NOTES: '',
 };
 
 import {build} from '../common';

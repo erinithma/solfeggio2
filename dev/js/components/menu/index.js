@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import { smWidth, mdWidth, lgWidth, xlWidth } from '../../common';
 import { connect } from 'react-redux';
-import {Button} from '../common';
+import {Button, Column} from '../common';
 import choose from './choose.svg';
 
 class VkWidget extends React.Component {
@@ -21,29 +21,35 @@ class VkWidget extends React.Component {
     render() {
         return (
             <div id="vk">
-                <div id="vk_groups"></div>
+                <div id="vk_groups" />
             </div>
         )
     }
 }
 
-function preventDefault(e) {
+function setMode(e, mode) {
     e.preventDefault();
+    window.store.dispatch({
+      type: 'SET_MODE',
+      payload: {
+        mode
+      }
+    })
 }
 
-const Menu = ({className, size}) => {
+const Menu = ({className, size, mode}) => {
   const [isShow, setShow] = useState(false);
   
   return (
     size === "xl+" || size === "xl" || size === "lg" ? 
         <div className={className}>
             <div className={`list`}>
-                <a onClick={preventDefault} href="/тренажер/игра">Игра</a>
-                <a onClick={preventDefault} href="/тренажер/мажор-минор">Мажор / минор</a>
-                <a onClick={preventDefault} href="/тренажер/ноты">Ноты</a>
-                <a onClick={preventDefault} href="/тренажер/интервалы">Интервалы</a>
-                <a onClick={preventDefault} href="/тренажер/трезвучия">Трезвучия</a>
-                <a onClick={preventDefault} href="/тренажер/диктант">Диктант</a>
+                <a onClick={(e) => setMode(e, 'play')} className={`${mode === 'play' ? 'active' : ''}`} href="/тренажер/игра">Игра</a>
+                <a onClick={(e) => setMode(e, 'mindur')} className={`${mode === 'mindur' ? 'active' : ''}`} href="/тренажер/мажор-минор">Мажор / минор</a>
+                <a onClick={(e) => setMode(e, 'note')} className={`${mode === 'note' ? 'active' : ''}`} href="/тренажер/ноты">Ноты</a>
+                <a onClick={(e) => setMode(e, 'play')} href="/тренажер/интервалы">Интервалы</a>
+                <a onClick={(e) => setMode(e, 'play')} href="/тренажер/трезвучия">Трезвучия</a>
+                <a onClick={(e) => setMode(e, 'play')} href="/тренажер/диктант">Диктант</a>
             </div> 
             <br/>
             <br/>
@@ -59,51 +65,51 @@ const Menu = ({className, size}) => {
         <div className="piano-like">
           <div>
             <Button type="primary" onClick={() => setShow(!isShow)}>
-              <img src={choose} width={16} height={16}/>
+              <img src={choose} width={18} height={18}/>
               Выбрать тренажер
             </Button>
             {
               isShow &&
-              <div style={{marginTop: 12}}>
+              <Column mt={12}>
                 <div className="grid">
                   <div className="item">
                     <a className="item__content row" href="/тренажер/игра">
-                      <img src="/assets/img/play.svg" alt="Игра" width="18" height="18" />
+                      <span className={'icon-mode-play'}/>
                         Игра
                     </a>
                   </div>
                   <div className="item">
                     <a className="item__content row" href="/тренажер/мажор-минор">
-                      <img src="/assets/img/mindur.svg" alt="Мажор / минор" width="18" height="18" />
+                      <span className={'icon-mode-mindur'}/>
                         Мажор / минор
                     </a>
                   </div>
                   <div className="item">
                     <a className="item__content row" href="/тренажер/ноты">
-                      <img src="/assets/img/note.svg" alt="Ноты" width="18" height="18" />
+                      <span className={'icon-mode-note'}/>
                         Ноты
                     </a>
                   </div>
                   <div className="item">
                     <a className="item__content row" href="/тренажер/интервалы">
-                      <img src="/assets/img/interval.svg" alt="Интервалы" width="18" height="18" />
+                      <span className={'icon-mode-interval'}/>
                         Интервалы
                     </a>
                   </div>
                   <div className="item">
                     <a className="item__content row" href="/тренажер/трезвучия">
-                      <img src="/assets/img/accord.svg" alt="Трезвучия" width="18" height="18" />
+                      <span className={'icon-mode-accord'}/>
                         Трезвучия
                     </a>
                   </div>
                   <div className="item">
                     <a className="item__content row" href="/тренажер/диктант">
-                      <img src="/assets/img/dictant.svg" alt="Диктант" width="18" height="18" />
+                      <span className={'icon-mode-dictant'}/>
                         Диктант
                     </a>
                   </div>
                 </div>
-              </div>  
+              </Column>
             }
           </div>
         </div>
@@ -115,7 +121,8 @@ const Menu = ({className, size}) => {
 const ConnectedMenu = connect(
     (state) => (
     {
-        size: state.sound.get("size")
+        size: state.sound.get("size"),
+        mode: state.sound.get('mode'),
     }),
     null
 )(Menu);  
