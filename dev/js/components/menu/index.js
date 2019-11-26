@@ -67,38 +67,38 @@ const Menu = ({className, size}) => {
               <div style={{marginTop: 12}}>
                 <div className="grid">
                   <div className="item">
-                    <a className="item__content" href="/тренажер/игра">
-                      <img src="/assets/img/play.svg" alt="Игра" width="45" height="45" />
+                    <a className="item__content row" href="/тренажер/игра">
+                      <img src="/assets/img/play.svg" alt="Игра" width="18" height="18" />
                         Игра
                     </a>
                   </div>
                   <div className="item">
-                    <a className="item__content" href="/тренажер/мажор-минор">
-                      <img src="/assets/img/mindur.svg" alt="Мажор / минор" width="45" height="45" />
+                    <a className="item__content row" href="/тренажер/мажор-минор">
+                      <img src="/assets/img/mindur.svg" alt="Мажор / минор" width="18" height="18" />
                         Мажор / минор
                     </a>
                   </div>
                   <div className="item">
-                    <a className="item__content" href="/тренажер/ноты">
-                      <img src="/assets/img/note.svg" alt="Ноты" width="45" height="45" />
+                    <a className="item__content row" href="/тренажер/ноты">
+                      <img src="/assets/img/note.svg" alt="Ноты" width="18" height="18" />
                         Ноты
                     </a>
                   </div>
                   <div className="item">
-                    <a className="item__content" href="/тренажер/интервалы">
-                      <img src="/assets/img/interval.svg" alt="Интервалы" width="45" height="45" />
+                    <a className="item__content row" href="/тренажер/интервалы">
+                      <img src="/assets/img/interval.svg" alt="Интервалы" width="18" height="18" />
                         Интервалы
                     </a>
                   </div>
                   <div className="item">
-                    <a className="item__content" href="/тренажер/трезвучия">
-                      <img src="/assets/img/accord.svg" alt="Трезвучия" width="45" height="45" />
+                    <a className="item__content row" href="/тренажер/трезвучия">
+                      <img src="/assets/img/accord.svg" alt="Трезвучия" width="18" height="18" />
                         Трезвучия
                     </a>
                   </div>
                   <div className="item">
-                    <a className="item__content" href="/тренажер/диктант">
-                      <img src="/assets/img/dictant.svg" alt="Диктант" width="45" height="45" />
+                    <a className="item__content row" href="/тренажер/диктант">
+                      <img src="/assets/img/dictant.svg" alt="Диктант" width="18" height="18" />
                         Диктант
                     </a>
                   </div>
