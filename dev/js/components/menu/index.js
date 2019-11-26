@@ -130,7 +130,7 @@ export default styled(ConnectedMenu)`
         width: 180px;
     }
     @media (max-width: ${xlWidth-1}px){
-        top: 45px;
+        top: 100px;
         right: 0;
         width: 180px;
     }
@@ -140,6 +140,6 @@ export default styled(ConnectedMenu)`
     }
 
     .list {
-        width: 45%;
+        width: 100%;
     }
 `;
