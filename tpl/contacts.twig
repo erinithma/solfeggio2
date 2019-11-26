@@ -1,0 +1,21 @@
+{% extends "layout.twig" %}
+
+{% block desc %}
+<title>Контакты - Сольфеджио.онлайн</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Контакты</h1>
+    <p>E-mail: <a href="mailto:solfeggio-online@mail.ru">solfeggio-online@mail.ru</a></p>
+    <div id="vk" style="margin-left: 20px">
+        <script type="text/javascript" src="https://vk.com/js/api/openapi.js?159"></script>
+        <!-- VK Widget -->
+        <div id="vk_groups"></div>
+        <script type="text/javascript">
+          VK.Widgets.Group("vk_groups", {mode: 3}, 171372561);
+        </script>
+    </div>
+{% endblock %}
+
+{% block scripts %}  
+{% endblock %}

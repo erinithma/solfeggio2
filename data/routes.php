@@ -23,5 +23,9 @@
         [
             "path" => "/обучение/",
             "controller" => "EducationController"
+        ],
+        [
+            "path" => "/контакты",
+            "controller" => "ContactsController"
         ]
     ];
