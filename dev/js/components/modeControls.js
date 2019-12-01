@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Button, SettingsButton, HideSettingsButton, Column} from './common';
+import {Button, SettingsButton, HideSettingsButton, PlayButton, Column, InfoBox, Row} from './common';
 
 function setNotes() {
   window.store.dispatch({
@@ -8,22 +8,25 @@ function setNotes() {
   })
 }
 
-const ModeControls = ({mode, showSettings}) => {
+const ModeControls = ({mode, showSettings, repeat}) => {
     switch(mode) {
       case 'note':
         return (
           !showSettings ?
-            <div className="row">
-              <Button className="play" icon="play"> Играть ноту</Button>
-              <SettingsButton ml={12} />
-            </div>
+            <Column>
+              <Row>
+                <PlayButton text="Играть ноту" repeatText="Повторить"/>
+                <SettingsButton ml={12} />
+              </Row>
+              <InfoBox mt={12}/>
+            </Column>
           :
             <Column>
-              <p>Выберите ноты на клавиатуре, которые вы хотите угадывать</p>
-              <div className="row">
+              <InfoBox mb={12} text="Выберите ноты на клавиатуре, которые вы хотите угадывать" />
+              <Row>
                 <Button className="ok" icon="check" onClick={setNotes}>Применить</Button>
                 <HideSettingsButton ml={12} />
-              </div>
+              </Row>
             </Column>
         );
       default:
@@ -31,7 +34,8 @@ const ModeControls = ({mode, showSettings}) => {
     }
 };
 
-export default connect((state) => ({
-  mode: state.sound.mode,
-  showSettings: state.sound.showSettings,
+export default connect(({sound}) => ({
+  mode: sound.mode,
+  showSettings: sound.showSettings,
+  repeat: sound.repeat,
 }))(ModeControls);

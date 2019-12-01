@@ -3,6 +3,7 @@ import createRootReducer from '../reducer'
 import middleware from '../middleware';
 import { getSize } from '../common';
 import a from '../const';
+import {modes} from '../const/modes';
 
 const store = createStore(
   createRootReducer(), 
@@ -16,5 +17,14 @@ function onResize(){
 $(window).on("load resize", onResize);
 
 window.store = store;
+
+const loc = decodeURIComponent(document.location.pathname);
+
+store.dispatch({
+  type: a.SET_MODE,
+  payload: {
+      mode: modes.get(loc)
+  }
+})
 
 export default store;

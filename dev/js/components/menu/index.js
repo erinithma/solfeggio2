@@ -73,37 +73,37 @@ const Menu = ({className, size, mode}) => {
               <Column mt={12}>
                 <div className="grid">
                   <div className="item">
-                    <a className="item__content row" href="/тренажер/игра">
+                    <a data-mode="play" className="item__content row" href="/тренажер/игра" onClick={() => setShow(false)}>
                       <span className={'icon-mode-play'}/>
                         Игра
                     </a>
                   </div>
                   <div className="item">
-                    <a className="item__content row" href="/тренажер/мажор-минор">
+                    <a data-mode="mindur" className="item__content row" href="/тренажер/мажор-минор" onClick={() => setShow(false)}>
                       <span className={'icon-mode-mindur'}/>
                         Мажор / минор
                     </a>
                   </div>
                   <div className="item">
-                    <a className="item__content row" href="/тренажер/ноты">
+                    <a data-mode="note" className="item__content row" href="/тренажер/ноты" onClick={() => setShow(false)}>
                       <span className={'icon-mode-note'}/>
                         Ноты
                     </a>
                   </div>
                   <div className="item">
-                    <a className="item__content row" href="/тренажер/интервалы">
+                    <a data-mode="interval" className="item__content row" href="/тренажер/интервалы" onClick={() => setShow(false)}>
                       <span className={'icon-mode-interval'}/>
                         Интервалы
                     </a>
                   </div>
                   <div className="item">
-                    <a className="item__content row" href="/тренажер/трезвучия">
+                    <a data-mode="accord" className="item__content row" href="/тренажер/трезвучия" onClick={() => setShow(false)}>
                       <span className={'icon-mode-accord'}/>
                         Трезвучия
                     </a>
                   </div>
                   <div className="item">
-                    <a className="item__content row" href="/тренажер/диктант">
+                    <a data-mode="dictant" className="item__content row" href="/тренажер/диктант" onClick={() => setShow(false)}>
                       <span className={'icon-mode-dictant'}/>
                         Диктант
                     </a>

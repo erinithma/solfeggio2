@@ -7,6 +7,7 @@ import {ThemeProvider} from 'styled-components';
 import Piano from './components/piano';
 import Menu from './components/menu';
 import ModeControls from './components/modeControls';
+import TotalResults from './components/totalResults';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -15,6 +16,7 @@ ReactDOM.render(
           <Piano />
           <Menu />
           <ModeControls />
+          <TotalResults />
         </>
       </ThemeProvider>
   </Provider>, 

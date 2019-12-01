@@ -15,3 +15,17 @@ $("body").on("click", function (e) {
         $(".menu-links").attr("data-show", "hide");
     }
 });
+
+$("body").on("click", "[data-mode]", function(e){
+		
+    const mode = $(this).attr("data-mode");
+    
+    window.store.dispatch({
+        type: 'SET_MODE',
+        payload: {
+          mode
+        }
+    })
+    
+    e.preventDefault();
+});

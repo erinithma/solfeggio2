@@ -1,6 +1,7 @@
 import { Record } from 'immutable';
 import { getSize, fill } from '../common';
 import a from '../const';
+import storage from '../common/storage';
 
 const Sound = Record({
     result: null,
@@ -17,7 +18,9 @@ const Sound = Record({
     mode: 'play',
     showSettings: false,
     step: 0,
-    totalSteps: 100,
+    totalSteps: storage.get().total,
+    repeat: false,
+    info: null,
 });
 
 function getOffset(index) {
@@ -42,11 +45,15 @@ export default (sound = new Sound(), action) => {
     switch(type){
         case a.PROGRESS:
             return sound.set("loaded", payload.count);
+        
         case a.LOAD_SOUND:
             return sound.set("state", "loading");
 
         case a.LOAD_SOUND + a.READY:
             return sound.set("state", "loaded"); 
+        
+        case a.SET_INFO:
+            return sound.set("info", payload.info);
 
         case a.KEY_DOWN:
             if(payload.fromMouse){
@@ -75,6 +82,9 @@ export default (sound = new Sound(), action) => {
 
         case a.DECREMENT_OCTAVE:
             return (index => setOffset(sound.set("currentOctave", index), index))(currentOctave <= 0 ? 4 : currentOctave - 1);
+
+        case a.REPEAT:
+            return sound.set("repeat", payload.value);
 
         case a.SET_SIZE:
             return sound.get("size") !== payload.size ? 
@@ -106,7 +116,7 @@ export default (sound = new Sound(), action) => {
             return sound.set("result", payload.result);
 
         case a.MODE_HIDE_TOTAL:
-            return sound.set("total", null);
+            return sound.set("total", null).set("step", 0);
 
         case a.MODE_COUNT:
             return sound.set("counter", payload.count);
@@ -116,6 +126,9 @@ export default (sound = new Sound(), action) => {
 
         case a.CLEAR_SCROLL:
             return sound.set("tempOffset", null);
+
+        case a.INCREMENT_STEP:
+            return sound.set("step", sound.get("step") + 1);
 
         default:
             return sound;

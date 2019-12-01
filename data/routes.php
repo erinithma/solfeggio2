@@ -21,6 +21,10 @@
             "controller" => "TrainingController"
         ],
         [
+            "path" => "/тренажер/ноты",
+            "controller" => "TrainingController"
+        ],
+        [
             "path" => "/обучение/",
             "controller" => "EducationController"
         ],

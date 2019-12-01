@@ -57,3 +57,7 @@ export function timeout(value, fnc = null){
         }
     }
 }
+
+export function getPercents(success, total, sign = true) {
+    return Math.round(100 * success / total) + (sign ? "%" : "");
+}

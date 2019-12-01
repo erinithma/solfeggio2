@@ -1,12 +1,19 @@
+import { fill } from ".";
+
 const NAME = "so_storage";
 
 function init(){
     if(!localStorage.getItem(NAME))
         localStorage.setItem(NAME, JSON.stringify({
             common: {
-                total: 10
+                total: 10,
+                showInfo: true,
             },
-            modes: {}
+            modes: {
+                note: {
+                    notes: fill().map( (_, i) => [24, 26, 28, 29, 31, 33, 35].includes(i) )
+                }
+            }
         }));
 }
 

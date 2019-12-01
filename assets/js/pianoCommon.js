@@ -258,7 +258,7 @@
 /******/ 				};
 /******/ 			});
 /******/ 			hotUpdate = {};
-/******/ 			var chunkId = "common";
+/******/ 			var chunkId = "pianoCommon";
 /******/ 			// eslint-disable-next-line no-lone-blocks
 /******/ 			{
 /******/ 				/*globals chunkId */
@@ -791,19 +791,32 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return hotCreateRequire("./js/menu.js")(__webpack_require__.s = "./js/menu.js");
+/******/ 	return hotCreateRequire("./js/pianoCommon.js")(__webpack_require__.s = "./js/pianoCommon.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./js/menu.js":
-/*!********************!*\
-  !*** ./js/menu.js ***!
-  \********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/***/ "./js/const/modes.js":
+/*!***************************!*\
+  !*** ./js/const/modes.js ***!
+  \***************************/
+/*! exports provided: modes */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-eval("$(\"body\").on(\"click\", \".menu\", function (e) {\n  e.preventDefault();\n  e.stopPropagation();\n  if ($(\".menu-links\").attr(\"data-show\") === \"show\") $(\".menu-links\").attr(\"data-show\", \"hide\");else $(\".menu-links\").attr(\"data-show\", \"show\");\n});\n$(\"body\").on(\"click\", function (e) {\n  if (!e.target.closest(\".menu-links\") && !e.target.closest(\".menu\")) {\n    if ($(\".menu-links\").attr(\"data-show\") === \"show\") e.preventDefault();\n    $(\".menu-links\").attr(\"data-show\", \"hide\");\n  }\n});\n$(\"body\").on(\"click\", \"[data-mode]\", function (e) {\n  var mode = $(this).attr(\"data-mode\");\n  window.store.dispatch({\n    type: 'SET_MODE',\n    payload: {\n      mode: mode\n    }\n  });\n  e.preventDefault();\n});\n\n//# sourceURL=webpack:///./js/menu.js?");
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"modes\", function() { return modes; });\nvar modes = new Map();\nmodes.set(\"/тренажер/игра\", \"play\");\nmodes.set(\"/тренажер/ноты\", \"note\");\nmodes.set(\"/тренажер/мажор-минор\", \"mindur\");\n\n//# sourceURL=webpack:///./js/const/modes.js?");
+
+/***/ }),
+
+/***/ "./js/pianoCommon.js":
+/*!***************************!*\
+  !*** ./js/pianoCommon.js ***!
+  \***************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _const_modes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./const/modes */ \"./js/const/modes.js\");\n\n$(window).on('popstate', function (e) {\n  var loc = decodeURIComponent((e.location || e.originalEvent && e.originalEvent.location || document.location).pathname);\n  window.store.dispatch({\n    type: \"SET_MODE\",\n    payload: {\n      mode: _const_modes__WEBPACK_IMPORTED_MODULE_0__[\"modes\"].get(loc)\n    }\n  });\n});\n\n//# sourceURL=webpack:///./js/pianoCommon.js?");
 
 /***/ })
 

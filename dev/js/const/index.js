@@ -23,6 +23,9 @@ let c = {
     PROGRESS: '',
     MODE_SET_RESULT: '',
     SAVE_NOTES: '',
+    REPEAT: '',
+    INCREMENT_STEP: '',
+    SET_INFO: '',
 };
 
 import {build} from '../common';

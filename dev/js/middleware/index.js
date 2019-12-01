@@ -13,22 +13,6 @@ const urls = {
   mindur: "/тренажер/мажор-минор"
 }
 
-const modes = new Map();
-modes.set("/тренажер/игра", "play");
-modes.set("/тренажер/ноты", "note");
-modes.set("/тренажер/мажор-минор", "mindur");
-
-$(window).on( 'popstate', function(e){
-  const loc = decodeURIComponent((e.location || ( e.originalEvent && e.originalEvent.location ) || document.location).pathname);
-
-  window.store.dispatch({
-    type: a.SET_MODE,
-    payload: {
-        mode: modes.get(loc)
-    }
-  })
-});
-
 export default (store) => (next) => (action) => {
     const { type, payload, ...rest } = action;
 
@@ -50,17 +34,22 @@ export default (store) => (next) => (action) => {
 
         case a.MODE_SHOW_SETTINGS:
             next(action);
-            console.log(storage.get('note').notes)
+
             if (store.getState().sound.mode === 'note') {
               const result = storage.get('note').notes || fill();
               next({
                 type: a.MODE_SET_RESULT,
                 payload: {
-                  result,
+                  result: result.map( r => r ? 'blue' : null),
                 }
               });
             }
 
+            break;
+
+        case a.MODE_PLAY:
+            workPlace.guess();
+            next(action);
             break;
 
         case a.KEY_DOWN:
@@ -77,12 +66,13 @@ export default (store) => (next) => (action) => {
             else {
                 sound.get(payload.index).play();
                 next(action);
+                workPlace.keyPressed(payload.index);
             }
 
             break;
 
         case a.SAVE_NOTES:
-            storage.set({notes: store.getState().sound.result}, 'note');
+            storage.set({notes: store.getState().sound.result.map( r => !!r )}, 'note');
             next({
               type: a.MODE_SET_RESULT,
               payload: {
@@ -92,6 +82,7 @@ export default (store) => (next) => (action) => {
             next({
               type: a.MODE_HIDE_SETTINGS,
             });
+            workPlace.remember();
             break;
 
         case a.KEY_UP:
@@ -104,10 +95,16 @@ export default (store) => (next) => (action) => {
             next(action);
             break;
 
+        case a.MODE_HIDE_TOTAL:
+            next(action);
+            window.workPlace.setMode(store.getState().sound.mode);
+            break;
+
         case a.SET_MODE:
             next(action);
             next({ type: a.CLEAR_SCROLL });
             history.pushState({}, null, urls[payload.mode]);
+            window.workPlace.setMode(payload.mode);
 
             /*store.getState().sound
                 .get("mode")

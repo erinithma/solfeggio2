@@ -47,7 +47,7 @@ export const PianoLike = ({className, children}) => {
     )
 };
 
-export const Button = styled(({className, children, id, onClick = () => {}, type = 'default', primary, success, danger, icon}) => {
+export const Button = styled(({className, children, id, onClick = () => {}, type = 'default', primary, success, danger, icon, ...rest}) => {
     const map = {
         primary: 'button--primary',
         success: 'button--success',
@@ -57,7 +57,7 @@ export const Button = styled(({className, children, id, onClick = () => {}, type
     const iconSpan = icon ? <span className={`icon-${icon}`}/> : null;
 
     return (
-        <button id={id} className={`button ${typeClass} ${className}`} onClick={onClick}>{iconSpan}{children}</button>
+        <button id={id} className={`button ${typeClass} ${className}`} onClick={onClick} {...rest}>{iconSpan}{children}</button>
     )
 })`
     ${props => getMargin(props)}
@@ -88,7 +88,7 @@ export const SettingsButton = connect(state => ({
   })
 }))(Settings);
 
-const HideSettings = styled(({className, children, id, onClick = () => {}, type = 'default', primary, success, danger, hideSettings}) => {
+const HideSettings = styled(({className, id, onClick = () => {}, type = 'default', primary, success, danger, hideSettings}) => {
   const map = {
     primary: 'button--primary',
     success: 'button--success',
@@ -98,7 +98,7 @@ const HideSettings = styled(({className, children, id, onClick = () => {}, type 
   const iconSpan = <span className={`icon-cancel`} style={{marginLeft: 6}}/>;
 
   return (
-    <button id={id} className={`button ${typeClass} ${className}`} onClick={hideSettings}>{iconSpan} Отменить</button>
+    <button id={id} className={`button ${typeClass} ${className}`} onClick={() => {hideSettings(); onClick();}}>{iconSpan} Отменить</button>
   )
 })`
     ${props => getMargin(props)}
@@ -120,3 +120,45 @@ export const HideSettingsButton = connect(state => ({
       })
     }
 }))(HideSettings);
+
+const Play = ({className, id, onClick = () => {}, repeat, setRepeat, play, repeatText, text, disabled, ...rest}) => (
+    <Button id={id} className={`play ${className}`} icon="play" disabled={disabled} onClick={() => {play(); setRepeat(); onClick();}} {...rest}>{repeat ? repeatText : text}</Button>
+);
+
+export const PlayButton = connect(({sound}) => ({
+  repeat: sound.repeat,
+  disabled: !!sound.total,
+}), (dispatch) => ({
+  play: () => {
+      dispatch({
+          type: 'MODE_PLAY',
+      });
+  },
+  setRepeat: () => {
+      dispatch({
+          type: 'REPEAT',
+          payload: {
+            value: true,
+          }
+      });
+  }
+}))(Play);
+
+const Info = styled( ({className, info, text, ...rest}) => {
+  return (
+    text || info ? <Column {...rest} className={className}>
+      <div>{text || info}</div>
+    </Column> : null
+  )
+})`
+  div { 
+    background-color: ${props => props.theme.yellow}; 
+    padding: 6px;
+    border-radius: 4px;
+  }
+  align-items: flex-start;
+`;
+
+export const InfoBox = connect(({sound}) => ({
+  info: sound.info,
+}))(Info);
