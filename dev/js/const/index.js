@@ -26,6 +26,7 @@ let c = {
     REPEAT: '',
     INCREMENT_STEP: '',
     SET_INFO: '',
+    SET_CHECK: '',
 };
 
 import {build} from '../common';

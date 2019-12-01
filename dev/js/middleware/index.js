@@ -64,7 +64,7 @@ export default (store) => (next) => (action) => {
                 });
             }
             else {
-                sound.get(payload.index).play();
+                sound.get(payload.index).play(0, 3);
                 next(action);
                 workPlace.keyPressed(payload.index);
             }
@@ -82,16 +82,10 @@ export default (store) => (next) => (action) => {
             next({
               type: a.MODE_HIDE_SETTINGS,
             });
-            workPlace.remember();
+            window.workPlace.setMode(payload.mode);
             break;
 
         case a.KEY_UP:
-            {
-                const s = sound.get(payload.index, true);
-        
-                if(s)
-                    s.stop();
-            }
             next(action);
             break;
 

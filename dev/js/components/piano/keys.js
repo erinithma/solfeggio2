@@ -26,6 +26,11 @@ const Key = ({className, children, index, loaded, down, up, color}) => {
 
     const onDown = () => {
         down(index);
+        if(detectTouch()) {
+            setTimeout( () => {
+                onUp(index);
+            }, 300)
+        }
     }
 
     const onUp = () => {
@@ -33,7 +38,7 @@ const Key = ({className, children, index, loaded, down, up, color}) => {
     }
 
     return detectTouch() ?
-        <div className={`${className} note`} onTouchStart={onDown} onTouchCancel={onUp} onTouchEnd={onUp}>{children}{spinner}</div>
+        <div className={`${className} note`} onTouchStart={onDown}>{children}{spinner}</div>
         : 
         <div className={`${className} note`} onMouseDown={onDown} onMouseUp={onUp}>{children}{spinner}</div>
 }
@@ -56,7 +61,7 @@ function connectWith(component){
             }),
             up: (index) => dispatch({
                 type: a.KEY_UP,
-                payload: {index}
+                payload: {index, fromMouse: !detectTouch()}
             })  
         })
     )(component);

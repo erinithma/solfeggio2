@@ -69,12 +69,12 @@ export default class Sound {
     play(indexes, time = 0){
         if(time < 0){
             indexes.slice().reverse().forEach( (val, index) => {
-                this.get(val).play(index * (-time), 2)
+                this.get(val).play(index * (-time), 3)
             })
         }
         else{
             indexes.forEach( (val, index) => {
-                this.get(val).play(index * time, 2)
+                this.get(val).play(index * time, 3)
             })
         }
         

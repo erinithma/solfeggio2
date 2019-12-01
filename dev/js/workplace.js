@@ -102,6 +102,8 @@ window.workPlace = {
 	},
 
 	guess : function(){
+		this.dispatch('SET_CHECK', {value: true});
+
 		if(typeof this.modules[this.mode] != "undefined" && typeof this.modules[this.mode].guess != "undefined")
 			this.modules[this.mode].guess();
 
@@ -117,6 +119,10 @@ window.workPlace = {
 		this.checked = true;
 		
 		this.total++;
+
+		this.dispatch('REPEAT', {value: false});
+		this.dispatch('INCREMENT_STEP');
+		this.dispatch('SET_CHECK', {value: false});
 
 		if(typeof this.modules[this.mode].check != "undefined")
 			this.modules[this.mode].check(id);
@@ -136,9 +142,7 @@ window.workPlace = {
 				yaCounter32364810.reachGoal('finished');
 
 			if(typeof this.modules[this.mode].showTotal != "undefined") {
-				setTimeout( () => {
-					return this.modules[this.mode].showTotal();
-				}, 1000);
+				this.modules[this.mode].showTotal();
 			}
 		}
 	},
@@ -167,7 +171,11 @@ window.workPlace = {
 		if(id < 0 || id >= 60)
 			return;
 		
-		window.sound.get(id).play();
+		window.sound.get(id).play(0, 3);
+	},
+
+	playAccord : function (accord){
+		window.sound.play(accord);
 	},
 
 	remember : function(){
@@ -181,8 +189,6 @@ window.workPlace = {
 	keyPressed : function(id){
 		if(id < 0 || id >= 60)
 			return;
-		
-		this.playNote(id);
 
 		if(typeof this.modules[this.mode] != "undefined" && typeof this.modules[this.mode].keyPressed != "undefined")
 			this.modules[this.mode].keyPressed(id);
@@ -266,8 +272,6 @@ window.workPlace = {
 				if(id === workPlace.note)
 					workPlace.success++;
 
-				workPlace.dispatch('REPEAT', {value: false});
-				workPlace.dispatch('INCREMENT_STEP');
 				workPlace.hideInfoBox();
 				
 				if(id == workPlace.note){
@@ -297,8 +301,11 @@ window.workPlace = {
 
 			showTotal: function() {
 				workPlace.hideInfoBox();
-				workPlace.dispatch('MODE_SET_RESULT', {result: null});
 				workPlace.dispatch('MODE_SHOW_TOTAL', {result: this.getResult()});
+
+				setTimeout( () => {
+					workPlace.dispatch('MODE_SET_RESULT', {result: null});					
+				}, 1000);
 			}
 		},
 
@@ -524,25 +531,13 @@ window.workPlace = {
 			mindur : 0,
 
 			select : function(){
-				$("#mode-controls .mindur .play .name").text("Играть трезвучие");
-				$("#result").show();
-				
 				if(window.yaCounter32364810) yaCounter32364810.reachGoal('мажор-минор');
 			},
 
 			init : function(){
-				$("body").on("click", "#mode-controls .mindur .min", function(e){
-					e.preventDefault();
-					workPlace.check(0);
-				});
-				
-				$("body").on("click", "#mode-controls .mindur .dur", function(e){
-					e.preventDefault();
-					workPlace.check(1);
-				});
 			},
 
-			guess : function(){
+			guess : function() {
 				if(!workPlace.checked){
 					this.play();
 					return;
@@ -551,9 +546,9 @@ window.workPlace = {
 				workPlace.clearResult(true);
 				
 				while(true){
-					this.mindur = common.random(0, 1);
+					this.mindur = random(0, 1);
 					
-					r  = common.random(0, 24 - 8);
+					const r  = random(0, 60 - 8);
 					
 					if(r != workPlace.note){
 						workPlace.note = r;
@@ -561,62 +556,56 @@ window.workPlace = {
 					}
 				}
 				
-				$("#info").show().text("Выберите прозвучавшее трезвучие");
-				$("#mode-controls .mindur .play .name").text("Повторить");
+				workPlace.showInfoBox("Выберите прозвучавшее трезвучие");
+
 				this.play();
-				
-				$("#mode-controls .mindur .select").show();
 				
 				workPlace.checked = false;
 			},
 
 			check : function(id){
-				if(id == this.mindur)
+				if(id == this.mindur){
 					workPlace.success++;
 
-				var self = this;
-				
-				setTimeout(function(){
-				
-					if(id == self.mindur){
-						$('.key[data-note-abs="' + workPlace.note + '"]').addClass("green");
-						$('.key[data-note-abs="' + (workPlace.note + 3 + self.mindur) + '"]').addClass("green");
-						$('.key[data-note-abs="' + (workPlace.note + 7) + '"]').addClass("green");
-						$("#result").css("color", "green");
-						
-					}
-					else{
-						$('.key[data-note-abs="' + workPlace.note + '"]').addClass("red");
-						$('.key[data-note-abs="' + (workPlace.note + 3 + self.mindur) + '"]').addClass("red");
-						$('.key[data-note-abs="' + (workPlace.note + 7) + '"]').addClass("red");
-						$("#result").css("color", "red");
-					}
-					
-					$("#result").text(workPlace.mindurs[self.mindur]);
-					
-					$("#mode-controls .mindur .play").text("Играть след. трезвучие");
-				}, 100);
-				
-				if(workPlace.total == workPlace.limit)
-					setTimeout(function(){
-						$('.key').removeClass("red").removeClass("green");
-					}, 300);
-				
-				$("#mode-controls .mindur .select").hide();
+					const result = fill(60, false);
+					result[workPlace.note] = 'green';
+					result[workPlace.note + 3 + this.mindur] = 'green';
+					result[workPlace.note + 7] = 'green';
+
+					workPlace.dispatch('MODE_SET_RESULT', {result})		
+				}
+				else{
+					const result = fill(60, false);
+					result[workPlace.note] = 'red';
+					result[workPlace.note + 3 + this.mindur] = 'red';
+					result[workPlace.note + 7] = 'red';
+
+					workPlace.dispatch('MODE_SET_RESULT', {result})	
+				}
 			},
 
 			play : function() {
 				if(this.mindur == 0){ // минор
-					workPlace.playNote(workPlace.note);
-					workPlace.playNote(workPlace.note + 3);
-					workPlace.playNote(workPlace.note + 7);
+					workPlace.playAccord([workPlace.note, workPlace.note + 3, workPlace.note + 7]);
 				}
 				else{	//мажор
-					workPlace.playNote(workPlace.note);
-					workPlace.playNote(workPlace.note + 4);
-					workPlace.playNote(workPlace.note + 7);
-					
+					workPlace.playAccord([workPlace.note, workPlace.note + 4, workPlace.note + 7]);
 				}
+			},
+
+			getResult: function() {
+				return [
+					['Результат', `${getPercents(workPlace.success, storage.get().total)} (${workPlace.success} / ${storage.get().total})`],
+				];
+			},
+
+			showTotal: function() {
+				workPlace.hideInfoBox();
+				workPlace.dispatch('MODE_SHOW_TOTAL', {result: this.getResult()});
+
+				setTimeout( () => {
+					workPlace.dispatch('MODE_SET_RESULT', {result: null});					
+				}, 1000);
 			}
 		},
 
@@ -1176,237 +1165,6 @@ window.workPlace = {
 					}
 				}
 				
-			}
-		},
-
-		know : {
-
-			img: null,
-			canvas: null,
-			ctx: null,
-			timer: null,
-			note: null,
-			startTime: 0,
-				
-			showResult : function(){
-				return "now";
-			},
-				
-			hideInfo : function(){
-				return false;	
-			},
-				
-			showTotal : function(){
-				
-				
-				
-				if(this.timer)
-					clearInterval(this.timer);
-
-				this.timer = null;
-								
-				var time = (new Date()).getTime() - this.startTime;
-				
-				var sec = Math.floor(time / 1000 % 60);
-				var min = Math.floor(time / 1000 / 60);
-				
-				if(sec < 10)
-					sec = "0" + sec;
-				
-				if(min < 10)
-					min = "0" + min;
-
-				$.post("/saveresult.php", {userid : common.getStorageVal("userid"), count: workPlace.limit, result: "00:" + min + ":" + sec}, function(data){
-					
-					var html = '<tr><th>#</th><th>Результат</th><th>Дата</th></tr>';
-					
-					data = $.parseJSON(data);
-					
-					for(var i = 0; i < data.length; i++){
-						
-						var s = "<tr class='@active@'><td>@i@</td><td>@result@</td><td>@time@</td></tr>";
-						
-						html += s.replace("@i@", i + 1).replace("@result@", data[i].result).replace("@time@", data[i].time).replace("@active@", data[i].now ? "active" : "");
-					}
-					
-					$("#totalKnowTable").html(html);
-					
-					$("#modalTotalKnow .username").html(common.getStorageVal("username") ? common.getStorageVal("username") : "Уважаемый пользователь");
-					$("#modalTotalKnow .count").html(min + ":" + sec);
-					$("#modalTotalKnow").modal();
-					
-					
-				});
-				
-				
-
-			},
-				
-			destroy: function(){
-				//alert('destroy');
-				if(this.timer)
-					clearInterval(this.timer);
-
-				this.timer = null;
-			},
-				
-			select : function(){
-				//alert(1)
-
-				$("#info").show();
-				$("#result").show();
-				
-				workPlace.showInfoBox("Нажмите клавишу на клавиатуре виртуального фортепиано сверху, соответствующую ноте, написанной на нотном стане внизу");
-				
-				this.drawKey();
-				this.generate();
-				this.drawNote(this.note, 40, true );
-				workPlace.checked = false;
-				
-				this.startTime = new Date();
-				this.startTime = this.startTime.getTime();
-				
-				var self = this;
-				
-				this.timer = setInterval(function(){
-					var time = (new Date()).getTime() - self.startTime;
-					
-					var sec = Math.floor(time / 1000 % 60);
-					var min = Math.floor(time / 1000 / 60);
-					
-					if(sec < 10)
-						sec = "0" + sec;
-					
-					if(min < 10)
-						min = "0" + min;
-					
-					$("#info").html("<span style='display: table; margin: 0 auto;'>" + min + ":" + sec + "</span>");
-				}, 100);
-				
-				if(window.yaCounter32364810) yaCounter32364810.reachGoal('знание-нот');
-				
-				//console.log("setInterval=" + this.timer);
-			},
-				
-			generate : function(){
-				var note;
-				
-				do{
-					note = common.random(0, 7 * 3 - 1);
-				} while(note == this.note);
-					
-				this.note = note;
-				
-				
-			},
-
-			remember : function(){
-
-			
-			},
-				
-			drawKey : function(){
-				this.canvas  = $(".know canvas")[0];
-	            this.ctx     = this.canvas && this.canvas.getContext('2d') || null;
-				if(this.ctx == null)
-					return;
-				
-	            this.ctx.fillStyle = "white";
-	            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-	            this.ctx.strokeStyle = 'black';
-	            this.ctx.lineWidth = 1;
-
-	            for(var i = 0; i < 5; i++){
-	            	this.ctx.drawImage(this.img, 0, 280, 1, 1, 0, 20 + 28 + i * 8, this.canvas.width, 1);
-	            }
-
-		        this.ctx.drawImage(this.img, 0, 0, 50, 85, 0, 14, 50, 85);
-			},
-				
-			drawNote : function(note, pos, whole, sharp, highlight){
-				if(this.ctx == null)
-					return;
-				
-				if(note < 8){
-					for(var i = 5; i < Math.abs(4 - Math.floor(note / 2)) + 5; i++){
-		            	this.ctx.drawImage(this.img, 0, 280, 1, 1, pos + 4, 20 + 28 + i * 8, 15, 1);
-		            }
-				}
-				else if(note > 17){					
-					for(var i = 0; i < (note - 18) + Math.floor(note % 2); i++){
-		            	this.ctx.drawImage(this.img, 0, 280, 1, 1, pos + 4, 20 + 28 - i * 8, 15, 1);
-		            }
-				}
-				
-				if(highlight == "green")
-					highlight = 165;
-				else if(highlight == "red")
-					highlight = 81;
-				else
-					highlight = 0;
-				
-				if(sharp === true){
-					this.ctx.drawImage(this.img, 126, highlight, 25, 50, pos - 10, 20 + (16 - note) * 4, 25, 50);
-				}
-				else if(sharp === 'bekar'){
-					this.ctx.drawImage(this.img, 150, highlight, 25, 50, pos - 10, 20 + (16 - note) * 4, 25, 50);
-				}
-				
-				if(whole === true)
-					this.ctx.drawImage(this.img, 97, highlight, 25, 50, pos, 9 + (17 - note) * 4, 25, 50);					
-				else
-					this.ctx.drawImage(this.img, 71, highlight, 25, 50, pos, 9 + (17 - note) * 4, 25, 50);
-				
-				
-			},
-				
-			drawLine : function(pos){
-				this.ctx.drawImage(this.img, 0, 280, 1, 1, pos, 20 + 28, 1, 4 * 8);
-			},
-				
-			check : function(id){
-				workPlace.success++;
-				workPlace.checked = false;
-			},
-
-			init : function(){
-				var self = this;
-				
-				this.img = new Image();
-				this.img.src = "/img/notes2.png";
-				this.img.onload = function(){
-					self.drawKey();
-					self.drawNote(self.note, 40, true );
-					}
-					
-				$("#modalTotalKnow").on("hide.bs.modal", function(){
-					workPlace.setMode("know");
-				});
-			},
-				
-			keyPressed : function(id){
-			
-				if(dictant.noteToKey(this.note, 0) != id){
-					this.drawKey();
-					this.drawNote(this.note, 40, true, false, "red");
-					
-					$("#result").css("color", "red");
-					$("#result").text("Не верно");
-				}
-				else{
-					this.generate();
-					this.drawKey();
-					this.drawNote(this.note, 40, true );
-					
-					$("#result").css("color", "green");
-					$("#result").text("Верно");
-					
-					setTimeout(function(){workPlace.check(id);}, 1000);
-					
-				}
-				
-				//workPlace.hideInfoBox();
 			}
 		},
 		

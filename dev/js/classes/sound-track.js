@@ -18,14 +18,14 @@ export default class SoundTrack {
       this.gainNode.gain.setValueAtTime(0.8, this.context.currentTime + time);
       this.source.start(this.context.currentTime + time);
       if(dur) {
-        let ct = this.context.currentTime + dur + 1;
+        let ct = this.context.currentTime + time + dur;
         this.gainNode.gain.exponentialRampToValueAtTime(0.001, ct);
         this.source.stop(ct);
       }
     }
     
     stop(time = 0) {
-      var ct = this.context.currentTime + time + 1;
+      var ct = this.context.currentTime + time;
       this.gainNode.gain.exponentialRampToValueAtTime(0.001, ct);
       this.source.stop(ct);
     }

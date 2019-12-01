@@ -8,7 +8,7 @@ function setNotes() {
   })
 }
 
-const ModeControls = ({mode, showSettings, repeat}) => {
+const ModeControls = ({mode, showSettings, check}) => {
     switch(mode) {
       case 'note':
         return (
@@ -29,6 +29,18 @@ const ModeControls = ({mode, showSettings, repeat}) => {
               </Row>
             </Column>
         );
+      case 'mindur':
+        return (
+            <Column>
+              <Row>
+                <PlayButton disabled={check} text="Играть трезвучие" repeatText="Повторить"/>
+                <Button ml={12} disabled={!check} onClick={() => window.workPlace.check(1)}>Мажор</Button>
+                <Button ml={12} disabled={!check} onClick={() => window.workPlace.check(0)}>Минор</Button>
+                <SettingsButton ml={12} />
+              </Row>
+              <InfoBox mt={12}/>
+            </Column>
+        );
       default:
         return null;
     }
@@ -38,4 +50,5 @@ export default connect(({sound}) => ({
   mode: sound.mode,
   showSettings: sound.showSettings,
   repeat: sound.repeat,
+  check: sound.check,
 }))(ModeControls);

@@ -21,6 +21,7 @@ const Sound = Record({
     totalSteps: storage.get().total,
     repeat: false,
     info: null,
+    check: false,
 });
 
 function getOffset(index) {
@@ -45,6 +46,9 @@ export default (sound = new Sound(), action) => {
     switch(type){
         case a.PROGRESS:
             return sound.set("loaded", payload.count);
+
+        case a.SET_CHECK:
+            return sound.set("check", payload.value);
         
         case a.LOAD_SOUND:
             return sound.set("state", "loading");
@@ -95,6 +99,7 @@ export default (sound = new Sound(), action) => {
         case a.SET_MODE:
             return sound
                 .set("total", null)
+                .set("step", 0)
                 .set("mode", payload.mode);
 
         case a.MODE_SHOW_RESULT:
@@ -129,6 +134,9 @@ export default (sound = new Sound(), action) => {
 
         case a.INCREMENT_STEP:
             return sound.set("step", sound.get("step") + 1);
+
+        case a.SAVE_NOTES:
+            return sound.set("step", 0);
 
         default:
             return sound;
