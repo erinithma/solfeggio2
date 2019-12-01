@@ -47,14 +47,13 @@ const Menu = ({className, size, mode}) => {
                 <a onClick={(e) => setMode(e, 'play')} className={`${mode === 'play' ? 'active' : ''}`} href="/тренажер/игра"><span className={'icon-mode-play'}/> Игра</a>
                 <a onClick={(e) => setMode(e, 'mindur')} className={`${mode === 'mindur' ? 'active' : ''}`} href="/тренажер/мажор-минор"><span className={'icon-mode-mindur'}/> Мажор / минор</a>
                 <a onClick={(e) => setMode(e, 'note')} className={`${mode === 'note' ? 'active' : ''}`} href="/тренажер/ноты"><span className={'icon-mode-note'}/> Ноты</a>
-                <a onClick={(e) => setMode(e, 'play')} href="/тренажер/интервалы"><span className={'icon-mode-interval'}/> Интервалы</a>
-                <a onClick={(e) => setMode(e, 'play')} href="/тренажер/трезвучия"><span className={'icon-mode-accord'}/> Трезвучия</a>
-                <a onClick={(e) => setMode(e, 'play')} href="/тренажер/диктант"><span className={'icon-mode-dictant'}/> Диктант</a>
+                <a onClick={(e) => setMode(e, 'interval')} className={`${mode === 'interval' ? 'active' : ''}`} href="/тренажер/интервалы"><span className={'icon-mode-interval'}/> Интервалы</a>
+                <a onClick={(e) => setMode(e, 'accord')} className={`${mode === 'accord' ? 'active' : ''}`} href="/тренажер/трезвучия"><span className={'icon-mode-accord'}/> Трезвучия</a>
+                <a onClick={(e) => setMode(e, 'dictant')} className={`${mode === 'dictant' ? 'active' : ''}`} href="/тренажер/диктант"><span className={'icon-mode-dictant'}/> Диктант</a>
             </div> 
             <br/>
             <br/>
             <div className={`list`}>
-                <a href="/donation">Помощь сайту</a>
                 <a href="/книги">Онлайн книги</a>
             </div> 
             <br/>

@@ -34,9 +34,11 @@ const ModeControls = ({mode, showSettings, check, size}) => {
             <Column>
               <Row className="wrap">
                 <PlayButton mb={12} disabled={check} text="Играть трезвучие" repeatText="Повторить" order={0}/>
-                <Button mb={12} ml={12} disabled={!check} onClick={() => window.workPlace.check(1)} order={2}>Мажор</Button>
-                <Button mb={12} ml={12} disabled={!check} onClick={() => window.workPlace.check(0)} order={3}>Минор</Button>
-                <SettingsButton mb={12} ml={12} order={size === "sm" ? 1 : 4}/>
+                <div className="button-group" style={{order: 2}}>
+                  <Button mb={12} ml={12} disabled={!check} onClick={() => window.workPlace.check(1)}>Мажор</Button>
+                  <Button mb={12} disabled={!check} onClick={() => window.workPlace.check(0)}>Минор</Button>
+                </div>
+                <SettingsButton mb={12} ml={12} order={size === "sm" ? 1 : 3}/>
               </Row>
               <InfoBox />
             </Column>

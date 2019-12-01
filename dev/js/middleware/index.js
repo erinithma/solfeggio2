@@ -10,7 +10,10 @@ let resultTimeout = null, offsetTimeout = null;
 const urls = {
   play: "/тренажер/игра",
   note: "/тренажер/ноты",
-  mindur: "/тренажер/мажор-минор"
+  mindur: "/тренажер/мажор-минор",
+  interval: "/тренажер/интервалы",
+  accord: "/тренажер/аккорды",
+  dictant: "/тренажер/диктант",
 }
 
 export default (store) => (next) => (action) => {

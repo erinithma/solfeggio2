@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "292ec2d6b74fb0d9226d";
+/******/ 	var hotCurrentHash = "fad29027a1ca80a7fe1b";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -804,7 +804,7 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"modes\", function() { return modes; });\nvar modes = new Map();\nmodes.set(\"/тренажер/игра\", \"play\");\nmodes.set(\"/тренажер/ноты\", \"note\");\nmodes.set(\"/тренажер/мажор-минор\", \"mindur\");\n\n//# sourceURL=webpack:///./js/const/modes.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"modes\", function() { return modes; });\nvar modes = new Map();\nmodes.set(\"/тренажер/игра\", \"play\");\nmodes.set(\"/тренажер/ноты\", \"note\");\nmodes.set(\"/тренажер/мажор-минор\", \"mindur\");\nmodes.set(\"/тренажер/интервалы\", \"interval\");\nmodes.set(\"/тренажер/аккорды\", \"accord\");\nmodes.set(\"/тренажер/диктант\", \"dictant\");\n\n//# sourceURL=webpack:///./js/const/modes.js?");
 
 /***/ }),
 

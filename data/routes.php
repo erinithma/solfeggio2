@@ -9,19 +9,7 @@
             "controller" => "TrainingController"
         ],
         [
-            "path" => "/тренажер/",
-            "controller" => "TrainingController"
-        ],
-        [
-            "path" => "/тренажер/игра",
-            "controller" => "TrainingController"
-        ],
-        [
-            "path" => "/тренажер/мажор-минор",
-            "controller" => "TrainingController"
-        ],
-        [
-            "path" => "/тренажер/ноты",
+            "path" => "/тренажер/(.*)",
             "controller" => "TrainingController"
         ],
         [

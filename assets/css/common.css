@@ -662,7 +662,8 @@ h3 {
 #mode {
   position: relative;
 }
-.button {
+.button,
+.radio {
   height: 28px;
   font-size: 16px;
   padding-bottom: 2px;
@@ -688,7 +689,8 @@ h3 {
   cursor: pointer;
 }
 @media (max-width: 575px) {
-  .button {
+  .button,
+  .radio {
     height: 30px;
     font-size: 18px;
   }
@@ -708,6 +710,23 @@ h3 {
 .button[disabled] {
   background: #CCC;
   cursor: not-allowed;
+}
+.button-group {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+.button-group > .button {
+  border-radius: 0;
+}
+.button-group > .button + .button {
+  margin-left: 0;
+}
+.button-group > .button:first-child {
+  border-radius: 4px 0 0 4px;
+}
+.button-group > .button:last-child {
+  border-radius: 0 4px 4px 0;
 }
 .button--primary {
   background: -webkit-gradient(linear, left top, left bottom, from(#06F), to(#06C));
@@ -785,6 +804,31 @@ h3 {
   background-color: #06F;
   color: white;
   text-decoration: none;
+}
+.radio:checked {
+  color: white;
+  background: -webkit-gradient(linear, left top, left bottom, from(#06C), to(#06F));
+  background: linear-gradient(to bottom, #06C, #06F);
+}
+.radio:checked > svg path {
+  fill: white;
+}
+.radio > input {
+  display: none;
+}
+.radio-group {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+.radio-group > .radio {
+  border-radius: 0;
+}
+.radio-group > .radio:first-child {
+  border-radius: 4px 0 0 4px;
+}
+.radio-group > .radio:last-child {
+  border-radius: 0 4px 4px 0;
 }
 .loader div {
   height: 20px;

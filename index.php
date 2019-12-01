@@ -16,7 +16,7 @@ $twig = new Twig_Environment($loader, array(
 ));
 
 foreach($routes as $r){
-  if($r['path'] === urldecode($_SERVER['REQUEST_URI'])){
+  if(preg_match("#^" . $r['path'] . "$#i", urldecode($_SERVER['REQUEST_URI']))){
     $c = new $r['controller']($twig);
     echo $c->render();
     exit;
