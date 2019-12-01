@@ -22,18 +22,18 @@ const getMargin = (props) => {
     `;
 }
 
-export const Row = styled( ({className, children}) => {
+export const Row = styled( ({className, children, ...rest}) => {
     return (
-        <div className={className}>{children}</div>
+        <div className={className} {...rest}>{children}</div>
     )
 })`
     display: flex;
     ${props => getMargin(props)}
 `;
 
-export const Column = styled( ({className, children}) => {
+export const Column = styled( ({className, children, ...rest}) => {
     return (
-        <div className={className}>{children}</div>
+        <div className={className} {...rest}>{children}</div>
     )
 })`
     display: flex;
@@ -47,7 +47,7 @@ export const PianoLike = ({className, children}) => {
     )
 };
 
-export const Button = styled(({className, children, id, onClick = () => {}, type = 'default', primary, success, danger, icon, ...rest}) => {
+export const Button = styled(({className, children, id, onClick = () => {}, type = 'default', style, order, primary, success, danger, icon, ...rest}) => {
     const map = {
         primary: 'button--primary',
         success: 'button--success',
@@ -55,25 +55,20 @@ export const Button = styled(({className, children, id, onClick = () => {}, type
     }
     const typeClass = map[type] || (primary ? map['primary'] : success ? map['success'] : danger ? map['danger'] : '');
     const iconSpan = icon ? <span className={`icon-${icon}`}/> : null;
+    const cssStyle = typeof order === "number" ? {...(style || {}), order} : style;
 
     return (
-        <button id={id} className={`button ${typeClass} ${className}`} onClick={onClick} {...rest}>{iconSpan}{children}</button>
+        <button id={id} className={`button ${typeClass} ${className}`} onClick={onClick} {...rest} style={cssStyle}>{iconSpan}{children}</button>
     )
 })`
     ${props => getMargin(props)}
 `;
 
-const Settings = styled(({className, children, id, onClick = () => {}, type = 'default', primary, success, danger, step, totalSteps, showSettings}) => {
-  const map = {
-    primary: 'button--primary',
-    success: 'button--success',
-    danger: 'button--danger'
-  }
-  const typeClass = map[type] || (primary ? map['primary'] : success ? map['success'] : danger ? map['danger'] : '');
+const Settings = styled(({className, children, id, onClick = () => {}, step, totalSteps, showSettings, ...rest}) => {
   const iconSpan = <span className={`icon-settings`} style={{marginLeft: 6}}/>;
 
   return (
-    <button id={id} className={`button ${typeClass} ${className}`} onClick={showSettings}>{step} / {totalSteps} {iconSpan}</button>
+    <Button id={id} className={`${className}`} onClick={showSettings} {...rest}>{step} / {totalSteps} {iconSpan}</Button>
   )
 })`
     ${props => getMargin(props)}

@@ -82,6 +82,7 @@ export default (store) => (next) => (action) => {
             next({
               type: a.MODE_HIDE_SETTINGS,
             });
+            next(action);
             window.workPlace.setMode(payload.mode);
             break;
 

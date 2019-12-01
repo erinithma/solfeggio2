@@ -29,7 +29,7 @@ function getOffset(index) {
         case 'sm':
             return index * -300;            
         case 'md':
-            return (index === 0 ? 0 : index - 1) * -173;
+            return (index === 0 ? 0 : index - 1 - (index === 4)) * -173;
         default:
             return 0;
     }

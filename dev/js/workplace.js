@@ -305,7 +305,7 @@ window.workPlace = {
 
 				setTimeout( () => {
 					workPlace.dispatch('MODE_SET_RESULT', {result: null});					
-				}, 1000);
+				}, 2000);
 			}
 		},
 
@@ -548,7 +548,7 @@ window.workPlace = {
 				while(true){
 					this.mindur = random(0, 1);
 					
-					const r  = random(0, 60 - 8);
+					const r = random(0, 60 - 8);
 					
 					if(r != workPlace.note){
 						workPlace.note = r;
@@ -556,7 +556,7 @@ window.workPlace = {
 					}
 				}
 				
-				workPlace.showInfoBox("Выберите прозвучавшее трезвучие");
+				workPlace.showInfoBox("Выберите прозвучавшее трезвучие с помощью кнопок 'Мажор' / 'Минор");
 
 				this.play();
 				
@@ -564,7 +564,9 @@ window.workPlace = {
 			},
 
 			check : function(id){
-				if(id == this.mindur){
+				workPlace.hideInfoBox();
+
+				if(id === this.mindur){
 					workPlace.success++;
 
 					const result = fill(60, false);
@@ -585,7 +587,7 @@ window.workPlace = {
 			},
 
 			play : function() {
-				if(this.mindur == 0){ // минор
+				if(this.mindur === 0){ // минор
 					workPlace.playAccord([workPlace.note, workPlace.note + 3, workPlace.note + 7]);
 				}
 				else{	//мажор
@@ -605,7 +607,7 @@ window.workPlace = {
 
 				setTimeout( () => {
 					workPlace.dispatch('MODE_SET_RESULT', {result: null});					
-				}, 1000);
+				}, 2000);
 			}
 		},
 

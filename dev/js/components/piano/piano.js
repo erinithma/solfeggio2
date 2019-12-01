@@ -125,7 +125,7 @@ class Piano extends React.Component{
                 {
                    (size === "sm" || size === "md") &&
                     <PianoLike>
-                        <h1 style={{margin: 0}}>{workPlace.modes[mode]}</h1>
+                        <h1 style={{margin: 0}}><span className={`icon-mode-${mode}`}/>{workPlace.modes[mode]}</h1>
                     </PianoLike>
                 }
                 <div className="piano-wrap">
