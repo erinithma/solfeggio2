@@ -112,7 +112,7 @@ export default (sound = new Sound(), action) => {
             return sound.set("showSettings", true);
 
         case a.MODE_HIDE_SETTINGS:
-            return sound.set("showSettings", false);
+            return sound.set("showSettings", false).set("result", null);
 
         case a.MODE_SHOW_TOTAL:
             return sound.set("total", payload.result);
@@ -138,6 +138,8 @@ export default (sound = new Sound(), action) => {
         case a.SAVE_NOTES:
             return sound.set("step", 0);
 
+        case a.SET_TOTAL:
+            return sound.set("totalSteps", payload.value);
         default:
             return sound;
     }

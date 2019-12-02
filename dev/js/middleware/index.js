@@ -77,16 +77,10 @@ export default (store) => (next) => (action) => {
         case a.SAVE_NOTES:
             storage.set({notes: store.getState().sound.result.map( r => !!r )}, 'note');
             next({
-              type: a.MODE_SET_RESULT,
-              payload: {
-                result: null,
-              }
-            });
-            next({
               type: a.MODE_HIDE_SETTINGS,
             });
             next(action);
-            window.workPlace.setMode(payload.mode);
+            window.workPlace.setMode(store.getState().sound.mode);
             break;
 
         case a.KEY_UP:
@@ -98,9 +92,15 @@ export default (store) => (next) => (action) => {
             window.workPlace.setMode(store.getState().sound.mode);
             break;
 
+        case a.MODE_HIDE_SETTINGS:
+            next({type: a.MODE_HIDE_RESULT});
+            next(action);
+            break;
+
         case a.SET_MODE:
             next(action);
             next({ type: a.CLEAR_SCROLL });
+            next({ type: a.MODE_HIDE_SETTINGS });
             history.pushState({}, null, urls[payload.mode]);
             window.workPlace.setMode(payload.mode);
 

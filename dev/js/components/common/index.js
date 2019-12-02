@@ -118,12 +118,6 @@ export const HideSettingsButton = connect(state => ({
       dispatch({
         type: 'MODE_HIDE_SETTINGS'
       });
-      dispatch({
-        type: 'MODE_SET_RESULT',
-        payload: {
-          result: null
-        }
-      })
     }
 }))(HideSettings);
 

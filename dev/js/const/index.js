@@ -27,6 +27,7 @@ let c = {
     INCREMENT_STEP: '',
     SET_INFO: '',
     SET_CHECK: '',
+    SET_TOTAL: '',
 };
 
 import {build} from '../common';

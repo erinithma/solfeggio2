@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Button, SettingsButton, HideSettingsButton, PlayButton, Column, InfoBox, Row} from './common';
+import Settings from './settings';
 
 function setNotes() {
   window.store.dispatch({
@@ -21,13 +22,10 @@ const ModeControls = ({mode, showSettings, check, size}) => {
               <InfoBox mt={12}/>
             </Column>
           :
-            <Column>
+            <Settings onClick={setNotes}>
               <InfoBox mb={12} text="Выберите ноты на клавиатуре, которые вы хотите угадывать" />
-              <Row>
-                <Button className="ok" icon="check" onClick={setNotes}>Применить</Button>
-                <HideSettingsButton ml={12} />
-              </Row>
-            </Column>
+            </Settings>
+
         );
       case 'mindur':
         return (
