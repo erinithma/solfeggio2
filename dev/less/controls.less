@@ -123,6 +123,7 @@
     margin: 0;
     border: 1px solid @color-default-dark;
     overflow: hidden;
+    font-size: 14px;
 
     a {
         display: block;
@@ -144,7 +145,21 @@
             color: white;
             text-decoration: none;
         }
+
+        &.error {
+            background-color: @color-danger;
+            color: white;
+        }
+
+        &.success {
+            background-color: @color-success;
+            color: white;
+        }
     }
+}
+
+.list--small {
+    font-size: 12px;
 }
 
 .radio:extend(.button) {

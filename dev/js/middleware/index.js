@@ -14,7 +14,7 @@ const urls = {
   interval: "/тренажер/интервалы",
   accord: "/тренажер/аккорды",
   dictant: "/тренажер/диктант",
-}
+};
 
 export default (store) => (next) => (action) => {
     const { type, payload, ...rest } = action;

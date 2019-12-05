@@ -21,4 +21,4 @@ ReactDOM.render(
       </ThemeProvider>
   </Provider>, 
   document.getElementById('piano')
-)
+);

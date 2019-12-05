@@ -786,6 +786,7 @@ h3 {
   margin: 0;
   border: 1px solid #CCC;
   overflow: hidden;
+  font-size: 14px;
 }
 .list a {
   display: block;
@@ -804,6 +805,17 @@ h3 {
   background-color: #06F;
   color: white;
   text-decoration: none;
+}
+.list a.error {
+  background-color: #F00;
+  color: white;
+}
+.list a.success {
+  background-color: #0C3;
+  color: white;
+}
+.list--small {
+  font-size: 12px;
 }
 .radio:checked {
   color: white;

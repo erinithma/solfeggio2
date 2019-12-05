@@ -25,7 +25,7 @@ $("body").on("click", "[data-mode]", function(e){
         payload: {
           mode
         }
-    })
+    });
     
     e.preventDefault();
 });

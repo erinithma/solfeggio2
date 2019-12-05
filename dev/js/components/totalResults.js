@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Button, SettingsButton, HideSettingsButton, PlayButton, Column, InfoBox, Row} from './common';
+import {Button, Column, Row} from './common';
 
 const TotalResults = ({total, hideTotal}) => {
   return (

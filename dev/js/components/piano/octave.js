@@ -3,7 +3,7 @@ import levels from './levels';
 
 const Octave = ({current, className, index}) => 
     <div className={`octave${current ? " octave--current" : ""} ${className}`}>
-        <levels.Normal index={index * 12 + 0}/>
+        <levels.Normal index={index * 12}/>
         <levels.Normal index={index * 12 + 2}/>
         <levels.Single index={index * 12 + 4}/>
         <levels.Normal index={index * 12 + 5}/>

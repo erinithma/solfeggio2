@@ -9,5 +9,5 @@ $(window).on( 'popstate', function(e){
     payload: {
         mode: modes.get(loc)
     }
-  })
+  });
 });

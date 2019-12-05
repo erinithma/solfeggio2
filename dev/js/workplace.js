@@ -13,24 +13,7 @@ window.workPlace = {
 	resultTimeout : null,
 	now : false,
 	currentOctave : 1,
-
 	notes : ['До', 'До#', 'Ре', 'Ре#', 'Ми', 'Фа', 'Фа#', 'Соль', 'Соль#', 'Ля', 'Ля#', 'Си'],
- 	intervals : [
-		"Прима",
-		"Малая секунда",
-		"Большая секунда",
-		"Малая терция",
-		"Большая терция",
-		"Кварта",
-		"Тритон",
-		"Квинта",
-		"Малая секста",
-		"Большая секста",
-		"Малая септима",
-		"Большая септима",
-		"Октава"
-		],
-	mindurs : ['Минор', 'Мажор'],
 	ids : {
 		'Z' : 0, 
 		'S' : 1,
@@ -67,7 +50,7 @@ window.workPlace = {
 	},
 		
 	setNote : function(id) {
-		if(typeof this.modules[this.mode] != "undefined" && typeof this.modules[this.mode].setNote != "undefined")
+		if(typeof this.modules[this.mode] !== "undefined" && typeof this.modules[this.mode].setNote !== "undefined")
 			this.modules[this.mode].setNote(id);
 	},
 
@@ -83,19 +66,19 @@ window.workPlace = {
 		this.total = 0;
 		this.success = 0;
 			
-		if(typeof this.modules[this.mode] != "undefined" && typeof this.modules[this.mode].destroy != "undefined")
+		if(typeof this.modules[this.mode] !== "undefined" && typeof this.modules[this.mode].destroy !== "undefined")
 			this.modules[this.mode].destroy();
 		
 		this.mode = mode;
 
 		this.remember();
 
-		if(typeof this.modules[this.mode] != "undefined" && typeof this.modules[this.mode].select != "undefined")
+		if(typeof this.modules[this.mode] !== "undefined" && typeof this.modules[this.mode].select !== "undefined")
 			this.modules[this.mode].select();
 	},
 
 	setSettings : function(){
-		if(typeof this.modules[this.mode] != "undefined" && typeof this.modules[this.mode].setSettings != "undefined")
+		if(typeof this.modules[this.mode] !== "undefined" && typeof this.modules[this.mode].setSettings !== "undefined")
 			this.modules[this.mode].setSettings();
 
 		this.hideSettings();
@@ -104,7 +87,7 @@ window.workPlace = {
 	guess : function(){
 		this.dispatch('SET_CHECK', {value: true});
 
-		if(typeof this.modules[this.mode] != "undefined" && typeof this.modules[this.mode].guess != "undefined")
+		if(typeof this.modules[this.mode] !== "undefined" && typeof this.modules[this.mode].guess !== "undefined")
 			this.modules[this.mode].guess();
 
 		this.hideSettings();
@@ -113,7 +96,7 @@ window.workPlace = {
 	check : function(id){
 		this.setNote(id);
 		
-		if(this.mode == "play" || this.checked)
+		if(this.mode === "play" || this.checked)
 			return;
 
 		this.checked = true;
@@ -124,10 +107,10 @@ window.workPlace = {
 		this.dispatch('INCREMENT_STEP');
 		this.dispatch('SET_CHECK', {value: false});
 
-		if(typeof this.modules[this.mode].check != "undefined")
+		if(typeof this.modules[this.mode].check !== "undefined")
 			this.modules[this.mode].check(id);
 		
-		if(this.total == this.limit)
+		if(this.total === this.limit)
 			this.showTotal();
 	},
 
@@ -136,12 +119,12 @@ window.workPlace = {
 	},
 
 	showTotal : function(){
-		if(this.total == this.limit && this.limit != 0){
+		if(this.total === this.limit && this.limit !== 0){
 			
 			if(window.yaCounter32364810) 
 				yaCounter32364810.reachGoal('finished');
 
-			if(typeof this.modules[this.mode].showTotal != "undefined") {
+			if(typeof this.modules[this.mode].showTotal !== "undefined") {
 				this.modules[this.mode].showTotal();
 			}
 		}
@@ -152,7 +135,7 @@ window.workPlace = {
 		$("#mode-controls ." + this.mode + " .settings").show();
 		$("#mode-controls ." + this.mode + " .main").hide();
 		
-		if(typeof this.modules[this.mode].showSettings != "undefined")
+		if(typeof this.modules[this.mode].showSettings !== "undefined")
 			this.modules[this.mode].showSettings();
 	},
 
@@ -163,7 +146,7 @@ window.workPlace = {
 		
 		$("#info").hide().text("");
 			
-		if(typeof this.modules[this.mode].hideSettings != "undefined")
+		if(typeof this.modules[this.mode].hideSettings !== "undefined")
 			this.modules[this.mode].hideSettings();
 	},
 
@@ -182,7 +165,7 @@ window.workPlace = {
 
 		this.setLimit(storage.get().total);
 
-		if(typeof this.modules[this.mode] != "undefined" && typeof this.modules[this.mode].remember != "undefined")
+		if(typeof this.modules[this.mode] !== "undefined" && typeof this.modules[this.mode].remember !== "undefined")
 			this.modules[this.mode].remember();
 	},
 
@@ -190,19 +173,19 @@ window.workPlace = {
 		if(id < 0 || id >= 60)
 			return;
 
-		if(typeof this.modules[this.mode] != "undefined" && typeof this.modules[this.mode].keyPressed != "undefined")
+		if(typeof this.modules[this.mode] !== "undefined" && typeof this.modules[this.mode].keyPressed !== "undefined")
 			this.modules[this.mode].keyPressed(id);
 	},
 
 	init : function(){
 		for(m in this.modules){
-			if(typeof this.modules[m].init != "undefined")
+			if(typeof this.modules[m].init !== "undefined")
 				this.modules[m].init();
 		}
 	},
 
 	getResult: function(){
-		if(typeof this.modules[this.mode] != "undefined" && typeof this.modules[this.mode].getResult != "undefined")
+		if(typeof this.modules[this.mode] !== "undefined" && typeof this.modules[this.mode].getResult !== "undefined")
 			this.modules[this.mode].getResult();
 	},
 
@@ -244,14 +227,14 @@ window.workPlace = {
 				workPlace.clearResult(true);
 				
 				while(true){
-					var r = random();
+					let r = random();
 					
 					if(this.noteKeysCount() > 2){
 						if(!this.noteKeys[r])
 							continue;
 					}
 					
-					if(r != workPlace.note){
+					if(r !== workPlace.note){
 						workPlace.note = r;
 						break;
 					}
@@ -274,7 +257,7 @@ window.workPlace = {
 
 				workPlace.hideInfoBox();
 				
-				if(id == workPlace.note){
+				if(id === workPlace.note){
 					const result = fill(60, false);
 					result[workPlace.note] = 'green';
 
@@ -315,50 +298,14 @@ window.workPlace = {
 			intervalMode : "up",
 
 			init : function(){
-				var self = this;
-
-				$('.interval-settings a').on("click", function(){
-					common.setStorageVal("intervalMode", $(this).attr("data-value"));
-					self.intervalMode = $(this).attr("data-value");
-
-					$(".interval-settings a.active").removeClass("active");
-					$(this).addClass("active");
-				});
-
-				$(".intervals a").on("click", function(){
-					if(!workPlace.settings){
-						var interval = $(this).attr("data-value");
-						workPlace.check(interval);
-						//workPlace.guess();
-					}
-					else{
-						$(this).toggleClass("green");
-						if($(this).hasClass("green")){
-							$("span", $(this)).show();
-						}
-						else{
-							$("span", $(this)).hide();
-						}
-					}
-				});
 			},
 
 			showSettings : function (){
-				$("#info").show().text("Выберите интервалы, которорые хотите угадывать (не менее 2х)");
-
-				$(".intervals a").show();
-			
-				for(var i = 1; i < this.intervalValues.length; i++){
-					if(this.intervalValues[i]){
-						$('.intervals a[data-value="'+i+'"]').addClass("green");
-						$("span", $('.intervals a[data-value="'+i+'"]')).show();
-					}
-				}
-				$('.intervals').show();
+				workPlace.showInfoBox("Выберите интервалы, которорые хотите угадывать (не менее 2х)");
 			},
 
 			play : function(){
-				var v = this.intervalMode;
+				const v = this.intervalMode;
 					
 				var self = this;
 
@@ -381,20 +328,7 @@ window.workPlace = {
 			},
 
 			setSettings : function(){
-				var self = this;
 
-				$(".intervals a").each(function(){
-					self.intervalValues[$(this).attr("data-value")] = $(this).hasClass("green");
-				});
-				
-				if(this.intervalCount() >= 2)
-					$(".intervals a").each(function(){
-						if(self.intervalValues[$(this).attr("data-value")] == false){
-							$(this).hide();
-						}
-					});
-				
-				common.setStorageVal("intervalValues", this.intervalValues.toString());
 			},
 
 			guess : function(){
@@ -407,37 +341,29 @@ window.workPlace = {
 				workPlace.clearResult(true);
 				
 				while(true){
-					this.interval = common.random(1, 12);
+					this.interval = random(1, 12);
 					
 					if(this.intervalCount() >= 2){
 						if(!this.intervalValues[this.interval])
 							continue;
 					}
 					
-					r  = common.random(0, 24);
+					let r  = random(0, 48);
 					
-					if(r != workPlace.note){
+					if(r !== workPlace.note){
 						workPlace.note = r;
 						break;
 					}
 				}
 				
-				$("#info").show().text("Выберите прозвучавший интервал");
-				$("#mode-controls .interval .play .name").text("Повторить");
 				this.play();
 						
-				$('.key').removeClass("red").removeClass("green");
-				
-				$('.intervals').show();
-				
 				workPlace.checked = false;
-				
-				//alert(2);
 			},
 
 			intervalCount : function() {
-				var cnt = 0;
-				for(var i = 0; i < this.intervalValues.length; i++){
+				let cnt = 0;
+				for(let i = 0; i < this.intervalValues.length; i++){
 					if(this.intervalValues[i])
 						cnt++;
 				}
@@ -445,86 +371,58 @@ window.workPlace = {
 			},
 
 			remember : function(){
-				if(common.getStorageVal("intervalValues") == null){
+				if(!storage.get("interval").intervals){
 					this.intervalValues = [];
-					for(var i = 0; i <= 12; i++){
+					for(let i = 0; i <= 12; i++) {
 						this.intervalValues.push(false);
 					}
 				}
 				else{
-					this.intervalValues = common.getStorageArray("intervalValues");
+					this.intervalValues = storage.get("interval").intervals;
 				}
 
-				if(common.getStorageVal("intervalMode") == null){
+				if(!storage.get("interval").mode){
 					this.intervalMode = "up";
 				}
-				else{
-					this.intervalMode = common.getStorageVal("intervalMode");
+				else {
+					this.intervalMode = storage.get("interval").mode;
 				}
 			},
 
 			select : function(){				
-
-				$('.interval-settings a[data-value="' + this.intervalMode + '"]').addClass("active");
-
-				$("#mode-controls .interval .play .name").text("Играть интервал");
-				$("#result").show();
-				
-				var self = this;
-
-				if(this.intervalCount() >= 2)
-					$(".intervals a").each(function(){
-						if(self.intervalValues[$(this).attr("data-value")] == false){
-							$(this).hide();
-						}
-					});
-					
 				if(window.yaCounter32364810) yaCounter32364810.reachGoal('интервал');
 			},
 
 			check : function(id){
-				//alert(1);
-				if(id == this.interval)
+				if(id === this.interval)
 					workPlace.success++;
 
-				var self = this;
-				
-				setTimeout(function(){
-				
-					if(id == self.interval){
-						$('.key[data-note-abs="' + workPlace.note + '"]').addClass("green");
-						$('.key[data-note-abs="' + (workPlace.note + self.interval) + '"]').addClass("green");
-						$("#result").css("color", "green");
-					}
-					else{
-						$('.key[data-note-abs="' + workPlace.note + '"]').addClass("red");
-						$('.key[data-note-abs="' + (workPlace.note + self.interval) + '"]').addClass("red");
-						$("#result").css("color", "red");
-					}
-					
-					$("#result").text(workPlace.intervals[self.interval]);
-					
-					$("#mode-controls .interval .play .name").text("Играть след. интервал");
-				}, 100);
-				
-				$(".intervals").hide();
+        workPlace.hideInfoBox();
+
+        if(id === this.interval){
+          const result = fill(60, false);
+          result[workPlace.note] = 'green';
+          result[workPlace.note + this.interval] = 'green';
+
+          workPlace.dispatch('MODE_SET_RESULT', {result});
+          workPlace.dispatch('MODE_SHOW_INTERVAL', {
+            intervals: [[this.interval, true]]
+					});
+        }
+        else{
+          const result = fill(60, false);
+          result[workPlace.note] = 'red';
+          result[workPlace.note + this.interval] = 'red';
+
+          workPlace.dispatch('MODE_SET_RESULT', {result});
+          workPlace.dispatch('MODE_SHOW_INTERVAL', {
+            intervals: [[this.interval, true], [id, false]]
+          });
+        }
 			},
 
-			hideSettings : function(){
-				$(".intervals a.green").removeClass("green");
-				$(".intervals span").hide();
-				if(workPlace.checked)
-					$(".intervals").hide();
-
-				var self = this;
-				
-				if(this.intervalCount() >= 2)
-					$(".intervals a").each(function(){
-						if(self.intervalValues[$(this).attr("data-value")] == false){
-							$(this).hide();
-						}
-					});
-			}
+			hideSettings : function() {
+      }
 		},
 
 		mindur : {

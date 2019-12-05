@@ -11,7 +11,7 @@ const transformSize = (size) => {
         default:
             return 0;
     }
-}
+};
 
 const getMargin = (props) => {
     return `
@@ -20,6 +20,10 @@ const getMargin = (props) => {
         margin-left: ${transformSize(props.ml)} !important;
         margin-right: ${transformSize(props.mr)} !important;
     `;
+};
+
+const getOrder = (props) => {
+  return typeof props.order === 'number' ? `order: ${props.order}` : '';
 }
 
 export const Row = styled( ({className, children, ...rest}) => {
@@ -29,6 +33,7 @@ export const Row = styled( ({className, children, ...rest}) => {
 })`
     display: flex;
     ${props => getMargin(props)}
+    ${props => getOrder(props)}
 `;
 
 export const Column = styled( ({className, children, ...rest}) => {
@@ -39,6 +44,7 @@ export const Column = styled( ({className, children, ...rest}) => {
     display: flex;
     flex-direction: column;
     ${props => getMargin(props)}
+    ${props => getOrder(props)}
 `;
 
 export const PianoLike = ({className, children}) => {
@@ -52,7 +58,7 @@ export const Button = styled(({className, children, id, onClick = () => {}, type
         primary: 'button--primary',
         success: 'button--success',
         danger: 'button--danger'
-    }
+    };
     const typeClass = map[type] || (primary ? map['primary'] : success ? map['success'] : danger ? map['danger'] : '');
     const iconSpan = icon ? <span className={`icon-${icon}`}/> : null;
 
@@ -61,29 +67,27 @@ export const Button = styled(({className, children, id, onClick = () => {}, type
     )
 })`
     ${props => getMargin(props)}
-    ${({order}) => typeof order === "number" && `order: ${order}`}
+    ${props => getOrder(props)}    
 `;
 
 export const Radio = styled(({className, children, id, name, onClick = () => {}, style, order, icon, checked, ...rest}) => {
   const iconSpan = icon ? <span className={`icon-${icon}`}/> : null;
-  const cssStyle = typeof order === "number" ? {...(style || {}), order} : style;
 
   return (
       <label className={`radio ${className}`} {...rest} style={cssStyle}>{iconSpan}{children}<input type="radio" id={id} name={name} checked={checked} onClick={onClick}/></label>
   )
 })`
   ${props => getMargin(props)}
+  ${props => getOrder(props)}
 `;
 
-const Settings = styled(({className, children, id, onClick = () => {}, step, totalSteps, showSettings, dispatch, ...rest}) => {
+const Settings = ({className, children, id, onClick = () => {}, step, totalSteps, showSettings, dispatch, ...rest}) => {
   const iconSpan = <span className={`icon-settings`} style={{marginLeft: 6}}/>;
 
   return (
     <Button id={id} className={`${className}`} onClick={showSettings} {...rest}>{step} / {totalSteps} {iconSpan}</Button>
   )
-})`
-    ${props => getMargin(props)}
-`;
+};
 
 export const SettingsButton = connect(state => ({
     step: state.sound.step,
@@ -94,21 +98,13 @@ export const SettingsButton = connect(state => ({
   })
 }))(Settings);
 
-const HideSettings = styled(({className, id, onClick = () => {}, type = 'default', primary, success, danger, hideSettings}) => {
-  const map = {
-    primary: 'button--primary',
-    success: 'button--success',
-    danger: 'button--danger'
-  }
-  const typeClass = map[type] || (primary ? map['primary'] : success ? map['success'] : danger ? map['danger'] : '');
+const HideSettings = ({className, onClick = () => {}, hideSettings, ...rest}) => {
   const iconSpan = <span className={`icon-cancel`} style={{marginLeft: 6}}/>;
 
   return (
-    <button id={id} className={`button ${typeClass} ${className}`} onClick={() => {hideSettings(); onClick();}}>{iconSpan} Отменить</button>
+    <Button className={`${className}`} onClick={() => {hideSettings(); onClick();}} {...rest}>{iconSpan} Отменить</Button>
   )
-})`
-    ${props => getMargin(props)}
-`;
+};
 
 export const HideSettingsButton = connect(state => ({
   step: state.sound.step,
@@ -132,6 +128,9 @@ export const PlayButton = connect(({sound}) => ({
   play: () => {
       dispatch({
           type: 'MODE_PLAY',
+      });
+      dispatch({
+        type: 'MODE_HIDE_RESULT',
       });
   },
   setRepeat: () => {

@@ -31,17 +31,17 @@ const Key = ({className, children, index, loaded, down, up, color}) => {
                 onUp(index);
             }, 300)
         }
-    }
+    };
 
     const onUp = () => {
         up(index);
-    }
+    };
 
     return detectTouch() ?
         <div className={`${className} note`} onTouchStart={onDown}>{children}{spinner}</div>
         : 
         <div className={`${className} note`} onMouseDown={onDown} onMouseUp={onUp}>{children}{spinner}</div>
-}
+};
 
 function connectWith(component){
     return connect(

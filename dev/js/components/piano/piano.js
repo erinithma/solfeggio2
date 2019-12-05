@@ -46,7 +46,7 @@ class Piano extends React.Component{
     onMouseUp = (e) => {
         if(this.props.lastTouchIndex !== -1)
             this.props.keyUp(this.props.lastTouchIndex);
-    }
+    };
 
     onKeyDown = (e) => {
         let key = e.keyCode;
@@ -73,7 +73,7 @@ class Piano extends React.Component{
         if(!Number.isNaN(key) && key > 0 && key <=5 ){
             this.props.selectOctave(key - 1);
         }
-    }
+    };
 
     onKeyUp = (e) => {
         const key = String.fromCharCode(e.keyCode);            
@@ -83,7 +83,7 @@ class Piano extends React.Component{
 
             this.props.keyUp(noteKey);
         }
-    }
+    };
 
     display = (i) => {
         const {size, currentOctave} = this.props;
@@ -107,15 +107,15 @@ class Piano extends React.Component{
         else{
             return true;
         }
-    }
+    };
 
     nextOctave = () => {
         this.props.nextOctave();
-    }
+    };
 
     prevOctave = () => {
         this.props.prevOctave();
-    }
+    };
 
     render(){
         const {tempOffset, offset, currentOctave, mode, size} = this.props;

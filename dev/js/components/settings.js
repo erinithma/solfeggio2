@@ -15,8 +15,8 @@ export default connect(null, dispatch => ({
   const handleClick = () => {
     storage.set({total: limit});
     setTotal(limit);
-    onClick();
-  }
+    onClick && onClick();
+  };
 
   return (
     <Column>

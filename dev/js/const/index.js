@@ -28,6 +28,7 @@ let c = {
     SET_INFO: '',
     SET_CHECK: '',
     SET_TOTAL: '',
+    MODE_SHOW_INTERVAL: '',
 };
 
 import {build} from '../common';

@@ -10,8 +10,8 @@ const store = createStore(
   compose( applyMiddleware(middleware) )
 );
 
-function onResize(){
-  store.dispatch({type: a.SET_SIZE, payload: {size: getSize()}})
+function onResize() {
+  store.dispatch({type: a.SET_SIZE, payload: {size: getSize()}});
 }
 
 $(window).on("load resize", onResize);
@@ -25,6 +25,6 @@ store.dispatch({
   payload: {
       mode: modes.get(loc)
   }
-})
+});
 
 export default store;

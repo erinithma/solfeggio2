@@ -113,9 +113,7 @@ const Menu = ({className, size, mode}) => {
           </div>
         </div>
   );
-}
-
-
+};
 
 const ConnectedMenu = connect(
     (state) => (
