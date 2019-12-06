@@ -17,130 +17,139 @@ const urls = {
 };
 
 export default (store) => (next) => (action) => {
-    const { type, payload, ...rest } = action;
+  const { type, payload, ...rest } = action;
 
-    switch(type){
-        case a.LOAD_SOUND:
-            next(action);
+  switch(type){
+    case a.LOAD_SOUND:
+      next(action);
 
-            sound                    
-                .loadAll(payload.urls)
-                .addListener(
-                    "loaded", 
-                    () => next({ ...rest, payload, type: type + a.READY })
-                )
-                .addListener(
-                    "progress", 
-                    (percents, count) => next({ ...rest, payload: {percents, count}, type: a.PROGRESS })
-                )
-            break;
+      sound
+        .loadAll(payload.urls)
+        .addListener(
+          "loaded",
+          () => next({ ...rest, payload, type: type + a.READY })
+        )
+        .addListener(
+          "progress",
+          (percents, count) => next({ ...rest, payload: {percents, count}, type: a.PROGRESS })
+        )
+      break;
 
-        case a.MODE_SHOW_SETTINGS:
-            next(action);
+    case a.MODE_SHOW_SETTINGS:
+      next(action);
 
-            if (store.getState().sound.mode === 'note') {
-              const result = storage.get('note').notes || fill();
-              next({
-                type: a.MODE_SET_RESULT,
-                payload: {
-                  result: result.map( r => r ? 'blue' : null),
-                }
-              });
-            }
+      if (store.getState().sound.mode === 'note') {
+        const result = storage.get('note').notes || fill();
+        next({
+          type: a.MODE_SET_RESULT,
+          payload: {
+            result: result.map( r => r ? 'blue' : null),
+          }
+        });
+      }
 
-            break;
+      break;
 
-        case a.MODE_PLAY:
-            workPlace.guess();
-            next(action);
-            break;
+    case a.MODE_PLAY:
+      workPlace.guess();
+      next(action);
+      break;
 
-        case a.KEY_DOWN:
-            if (store.getState().sound.showSettings && store.getState().sound.mode === 'note') {
-                const res = store.getState().sound.result;
-                res[payload.index] = res[payload.index] ? null : 'blue';
-                next({
-                    type: a.MODE_SET_RESULT,
-                    payload: {
-                        result: res,
-                    }
-                });
-            }
-            else {
-                sound.get(payload.index).play(0, 3);
-                next(action);
-                workPlace.keyPressed(payload.index);
-            }
+    case a.KEY_DOWN:
+      if (store.getState().sound.showSettings && store.getState().sound.mode === 'note') {
+        const res = store.getState().sound.result;
+        res[payload.index] = res[payload.index] ? null : 'blue';
+        next({
+          type: a.MODE_SET_RESULT,
+          payload: {
+            result: res,
+          }
+        });
+      }
+      else {
+        sound.get(payload.index).play(0, 3);
+        next(action);
+        workPlace.keyPressed(payload.index);
+      }
 
-            break;
+      break;
 
-        case a.SAVE_NOTES:
-            storage.set({notes: store.getState().sound.result.map( r => !!r )}, 'note');
-            next({
-              type: a.MODE_HIDE_SETTINGS,
-            });
-            next(action);
-            window.workPlace.setMode(store.getState().sound.mode);
-            break;
+    case a.SAVE_NOTES:
+      storage.set({notes: store.getState().sound.result.map( r => !!r )}, 'note');
+      next({
+        type: a.MODE_HIDE_SETTINGS,
+      });
+      next(action);
+      window.workPlace.setMode(store.getState().sound.mode);
+      break;
 
-        case a.KEY_UP:
-            next(action);
-            break;
+    case a.SAVE_INTERVALS:
+      storage.set({intervals: payload.intervals}, "interval");
+      next({
+        type: a.MODE_HIDE_SETTINGS,
+      });
+      next(action);
+      window.workPlace.setMode(store.getState().sound.mode);
+      break;
 
-        case a.MODE_HIDE_TOTAL:
-            next(action);
-            window.workPlace.setMode(store.getState().sound.mode);
-            break;
+    case a.KEY_UP:
+      next(action);
+      break;
 
-        case a.MODE_HIDE_SETTINGS:
-            next({type: a.MODE_HIDE_RESULT});
-            next(action);
-            break;
+    case a.MODE_HIDE_TOTAL:
+      next(action);
+      window.workPlace.setMode(store.getState().sound.mode);
+      break;
 
-        case a.SET_MODE:
-            next(action);
-            next({ type: a.CLEAR_SCROLL });
-            next({ type: a.MODE_HIDE_SETTINGS });
-            history.pushState({}, null, urls[payload.mode]);
-            window.workPlace.setMode(payload.mode);
+    case a.MODE_HIDE_SETTINGS:
+      next({type: a.MODE_HIDE_RESULT});
+      next(action);
+      break;
 
-            /*store.getState().sound
-                .get("mode")
-                .addListener(
-                    "counter", 
-                    (count) => {
-                        next({ type: a.MODE_COUNT, payload: {count} })
-                    }
-                )
-                .addListener(
-                    "finish", 
-                    (result) => {
-                        setTimeout( () => {
-                            next({ type: a.MODE_COUNT, payload: {count: 0} });
-                            next({ type: a.MODE_SHOW_TOTAL, payload: {result} });
-                        },
-                        300);                        
-                    }
-                )
-                .addListener(
-                    "offset", 
-                    (value) => {
-                        next({ type: a.SCROLL_TEMP, payload: {value} });  
-                        timeout(offsetTimeout);
-                        offsetTimeout = timeout(2500, () => {
-                            next({ type: a.CLEAR_SCROLL });  
-                        });
-                    }
-                );*/
-            break;
-        
-        case a.SET_SIZE:
-            next({ type: a.CLEAR_SCROLL });
-            next(action);
-            break;
+    case a.SET_MODE:
+      next({ type: a.CLEAR_SCROLL });
+      next({ type: a.MODE_HIDE_SETTINGS });
+      next(action);
+      history.pushState({}, null, urls[payload.mode]);
+      window.workPlace.setMode(payload.mode);
 
-        default:
-            return next(action)        
+      /*store.getState().sound
+          .get("mode")
+          .addListener(
+              "counter",
+              (count) => {
+                  next({ type: a.MODE_COUNT, payload: {count} })
+              }
+          )
+          .addListener(
+              "finish",
+              (result) => {
+                  setTimeout( () => {
+                      next({ type: a.MODE_COUNT, payload: {count: 0} });
+                      next({ type: a.MODE_SHOW_TOTAL, payload: {result} });
+                  },
+                  300);
+              }
+          )
+          .addListener(
+              "offset",
+              (value) => {
+                  next({ type: a.SCROLL_TEMP, payload: {value} });
+                  timeout(offsetTimeout);
+                  offsetTimeout = timeout(2500, () => {
+                      next({ type: a.CLEAR_SCROLL });
+                  });
+              }
+          );*/
+      break;
+
+    case a.SET_SIZE:
+      next({ type: a.CLEAR_SCROLL });
+      next(action);
+      break;
+
+    default:
+      return next(action)
   }
- 
+
 }

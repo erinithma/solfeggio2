@@ -9,7 +9,7 @@ export default connect(null, dispatch => ({
     payload: {
       value
     }
-})}))(({onClick, children, setTotal}) => {
+})}))(({onClick, children, setTotal, onCancel = () => {}}) => {
   const [limit, setLimit] = useState(storage.get().total);
 
   const handleClick = () => {
@@ -21,9 +21,9 @@ export default connect(null, dispatch => ({
   return (
     <Column>
       {children}
-      <Row style={{alignItems: 'center'}} mb={12}>
+      <Row className={'align-center'} mb={12}>
         Количество шагов:&nbsp;
-        <select className={'button'} value={limit} onChange={(e) => setLimit(e.target.value)}>
+        <select className={'button'} value={limit} onChange={(e) => setLimit(+e.target.value)}>
           <option value={10}>10</option>
           <option value={20}>20</option>
           <option value={30}>30</option>
@@ -33,7 +33,7 @@ export default connect(null, dispatch => ({
       </Row>
       <Row>
         <Button className="ok" icon="check" onClick={handleClick}>Применить</Button>
-        <HideSettingsButton ml={12} />
+        <HideSettingsButton ml={12} onClick={onCancel}/>
       </Row>
     </Column>
   )

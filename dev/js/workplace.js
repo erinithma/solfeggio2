@@ -14,19 +14,6 @@ window.workPlace = {
 	now : false,
 	currentOctave : 1,
 	notes : ['До', 'До#', 'Ре', 'Ре#', 'Ми', 'Фа', 'Фа#', 'Соль', 'Соль#', 'Ля', 'Ля#', 'Си'],
-	ids : {
-		'Z' : 0, 
-		'S' : 1,
-		'X' : 2,
-		'D' : 3,
-		'C' : 4,
-		'V' : 5,
-		'G' : 6,
-		'B' : 7,
-		'H' : 8,
-		'N' : 9,
-		'J' : 10,
-		'M' : 11},
 	accordsDur : [
 		'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'H'
 	],
@@ -55,7 +42,7 @@ window.workPlace = {
 	},
 
 	setLimit : function(limit){
-		this.limit = limit;
+		this.limit = +limit;
 	},
 
 	setMode : function(mode){
@@ -109,9 +96,10 @@ window.workPlace = {
 
 		if(typeof this.modules[this.mode].check !== "undefined")
 			this.modules[this.mode].check(id);
-		
-		if(this.total === this.limit)
-			this.showTotal();
+
+		if(this.total === this.limit) {
+      this.showTotal();
+    }
 	},
 
 	clearResult : function(){
@@ -131,21 +119,11 @@ window.workPlace = {
 	},
 
 	showSettings : function (){
-		this.settings = true;
-		$("#mode-controls ." + this.mode + " .settings").show();
-		$("#mode-controls ." + this.mode + " .main").hide();
-		
 		if(typeof this.modules[this.mode].showSettings !== "undefined")
 			this.modules[this.mode].showSettings();
 	},
 
 	hideSettings : function (){
-		this.settings = false;
-		$("#mode-controls ." + this.mode + " .settings").hide();
-		$("#mode-controls ." + this.mode + " .main").show();
-		
-		$("#info").hide().text("");
-			
 		if(typeof this.modules[this.mode].hideSettings !== "undefined")
 			this.modules[this.mode].hideSettings();
 	},
@@ -157,8 +135,8 @@ window.workPlace = {
 		window.sound.get(id).play(0, 3);
 	},
 
-	playAccord : function (accord){
-		window.sound.play(accord);
+	playAccord : function (accord, time = 0){
+		window.sound.play(accord, time);
 	},
 
 	remember : function(){
@@ -178,7 +156,7 @@ window.workPlace = {
 	},
 
 	init : function(){
-		for(m in this.modules){
+		for(let m in this.modules){
 			if(typeof this.modules[m].init !== "undefined")
 				this.modules[m].init();
 		}
@@ -193,15 +171,9 @@ window.workPlace = {
 		note : {
 			noteKeys : null,
 
-			getResult: function() {
-				return [
-					['Результат', `${getPercents(workPlace.success, storage.get().total)} (${workPlace.success} / ${storage.get().total})`],
-				];
-			},
-
 			noteKeysCount : function (){
-				var cnt = 0;
-				for(var i = 0; i < this.noteKeys.length; i++){
+				let cnt = 0;
+				for(let i = 0; i < this.noteKeys.length; i++){
 					if(this.noteKeys[i])
 						cnt++;
 				}
@@ -282,7 +254,14 @@ window.workPlace = {
 				}
 			},
 
-			showTotal: function() {
+      getResult: function() {
+        return [
+          ['Результат', `${getPercents(workPlace.success, storage.get().total)} (${workPlace.success} / ${storage.get().total})`],
+        ];
+      },
+
+
+      showTotal: function() {
 				workPlace.hideInfoBox();
 				workPlace.dispatch('MODE_SHOW_TOTAL', {result: this.getResult()});
 
@@ -306,24 +285,15 @@ window.workPlace = {
 
 			play : function(){
 				const v = this.intervalMode;
-					
-				var self = this;
 
-				if(v == "up"){
-					workPlace.playNote(workPlace.note);
-					setTimeout(function(){
-						workPlace.playNote(workPlace.note + self.interval);
-						}, 1000);
+				if(v === "up") {
+					workPlace.playAccord([workPlace.note, workPlace.note + this.interval + 1], 0.5);
 				}
-				else if(v == "down"){
-					workPlace.playNote(workPlace.note + self.interval);
-					setTimeout(function(){
-						workPlace.playNote(workPlace.note);
-						}, 1000);
-				}
-				else{
-					workPlace.playNote(workPlace.note);
-					workPlace.playNote(workPlace.note + self.interval);
+				else if(v === "down") {
+          workPlace.playAccord([workPlace.note, workPlace.note + this.interval + 1], -0.5);
+        }
+				else {
+          workPlace.playAccord([workPlace.note, workPlace.note + this.interval + 1]);
 				}
 			},
 
@@ -341,7 +311,7 @@ window.workPlace = {
 				workPlace.clearResult(true);
 				
 				while(true){
-					this.interval = random(1, 12);
+					this.interval = random(0, 11);
 					
 					if(this.intervalCount() >= 2){
 						if(!this.intervalValues[this.interval])
@@ -402,26 +372,41 @@ window.workPlace = {
         if(id === this.interval){
           const result = fill(60, false);
           result[workPlace.note] = 'green';
-          result[workPlace.note + this.interval] = 'green';
+          result[workPlace.note + this.interval + 1] = 'green';
 
           workPlace.dispatch('MODE_SET_RESULT', {result});
-          workPlace.dispatch('MODE_SHOW_INTERVAL', {
-            intervals: [[this.interval, true]]
+          workPlace.dispatch('MODE_HIGHLIGHT_OPTIONS', {
+            options: [[this.interval, true]]
 					});
         }
         else{
           const result = fill(60, false);
           result[workPlace.note] = 'red';
-          result[workPlace.note + this.interval] = 'red';
+          result[workPlace.note + this.interval + 1] = 'red';
 
           workPlace.dispatch('MODE_SET_RESULT', {result});
-          workPlace.dispatch('MODE_SHOW_INTERVAL', {
-            intervals: [[this.interval, true], [id, false]]
+          workPlace.dispatch('MODE_HIGHLIGHT_OPTIONS', {
+            options: [[this.interval, true], [id, false]]
           });
         }
 			},
 
 			hideSettings : function() {
+      },
+
+      getResult: function() {
+        return [
+          ['Результат', `${getPercents(workPlace.success, storage.get().total)} (${workPlace.success} / ${storage.get().total})`],
+        ];
+      },
+
+      showTotal: function() {
+        workPlace.hideInfoBox();
+        workPlace.dispatch('MODE_SHOW_TOTAL', {result: this.getResult()});
+
+        setTimeout( () => {
+          workPlace.dispatch('MODE_SET_RESULT', {result: null});
+        }, 2000);
       }
 		},
 

@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Button, SettingsButton, PlayButton, Column, InfoBox, Row} from './common';
 import Settings from './settings';
+import storage from "../common/storage";
+import {fill} from "../common";
 
 function setNotes() {
   window.store.dispatch({
@@ -9,9 +11,10 @@ function setNotes() {
   })
 }
 
-function setIntervals() {
+function setIntervals(intervals) {
   window.store.dispatch({
-    type: 'SAVE_NOTES'
+    type: 'SAVE_INTERVALS',
+    payload: {intervals}
   })
 }
 
@@ -30,24 +33,25 @@ const INTERVALS = [
   "Октава"
 ];
 
-const Intervals = connect(({sound: {intervals}}) => ({intervals}))(({showSettings, check, size, intervals}) => {
-  const [first, setFirst] = useState(true);
+const Intervals = connect(({sound: {options: intervals, showOptions}}) => ({intervals, showOptions}))(({showSettings, check, size, intervals, showOptions}) => {
+  const [selected, setSelected] = useState(storage.get("interval").intervals || fill(60, false));
+
   return (
     !showSettings ?
       <Column className="align-start">
         <Row>
-          <PlayButton text="Играть интервал" repeatText="Повторить" onClick={() => setFirst(false)}/>
+          <PlayButton text="Играть интервал" repeatText="Повторить" />
           <SettingsButton ml={12} />
         </Row>
         <InfoBox mt={20}/>
         <div className="list list--small" style={{marginTop: 12}}>
           {
-            !first ? INTERVALS.map( (v, i) => (
+           showOptions ? INTERVALS.map( (v, i) => (
               <a
                 key={i}
                 href={'#'}
-                onClick={(e) => {e.preventDefault(); window.workPlace.check( i + 1 );}}
-                className={`${intervals && intervals.find( v => v[0] === i + 1) ? (intervals.find( v => v[0] === i + 1)[1] ? 'success' : 'error') : ''}`}
+                onClick={(e) => {e.preventDefault(); window.workPlace.check( i );}}
+                className={`${intervals && intervals.find( v => v[0] === i) ? (intervals.find( v => v[0] === i)[1] ? 'success' : 'error') : ''}`}
               >
                 {v} ({i + 1})
               </a>
@@ -56,8 +60,24 @@ const Intervals = connect(({sound: {intervals}}) => ({intervals}))(({showSetting
         </div>
       </Column>
       :
-      <Settings onClick={setIntervals}>
-        <InfoBox mb={12} text="Выберите интервалы, которые вы хотите угадывать" />
+      <Settings onClick={() => setIntervals(selected)} onCancel={() => setSelected(storage.get("interval").intervals || fill(60, false))}>
+        <InfoBox text="Выберите интервалы, которые вы хотите угадывать (не менее двух)" />
+        <Column mt={12} mb={12} className="align-start">
+          <div className="list list--small">
+            {
+              INTERVALS.map( (v, i) => (
+                <a
+                  key={i}
+                  href={'#'}
+                  onClick={(e) => {e.preventDefault(); const s = selected.slice(); s[i] = !s[i]; setSelected(s);}}
+                  className={`${selected[i] ? 'active' : ''}`}
+                >
+                  {v} ({i + 1})
+                </a>
+              ))
+            }
+          </div>
+        </Column>
       </Settings>
   )
 });
@@ -76,7 +96,7 @@ const ModeControls = ({mode, showSettings, check, size}) => {
             </Column>
           :
             <Settings onClick={setNotes}>
-              <InfoBox mb={12} text="Выберите ноты на клавиатуре, которые вы хотите угадывать" />
+              <InfoBox mb={12} text="Выберите ноты на клавиатуре, которые вы хотите угадывать (не менее двух)" />
             </Settings>
 
         );

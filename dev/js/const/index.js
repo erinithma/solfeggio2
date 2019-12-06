@@ -23,12 +23,13 @@ let c = {
     PROGRESS: '',
     MODE_SET_RESULT: '',
     SAVE_NOTES: '',
+    SAVE_INTERVALS: '',
     REPEAT: '',
     INCREMENT_STEP: '',
     SET_INFO: '',
     SET_CHECK: '',
     SET_TOTAL: '',
-    MODE_SHOW_INTERVAL: '',
+    MODE_HIGHLIGHT_OPTIONS: '',
 };
 
 import {build} from '../common';

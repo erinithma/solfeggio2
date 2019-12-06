@@ -22,7 +22,8 @@ const Sound = Record({
   repeat: false,
   info: null,
   check: false,
-  intervals: null,
+  options: null,
+  showOptions: true,
 });
 
 function getOffset(index) {
@@ -49,7 +50,9 @@ export default (sound = new Sound(), action) => {
       return sound.set("loaded", payload.count);
 
     case a.SET_CHECK:
-      return sound.set("check", payload.value);
+      return sound
+        .set("check", payload.value)
+        .set("showOptions", true);
 
     case a.LOAD_SOUND:
       return sound.set("state", "loading");
@@ -101,7 +104,8 @@ export default (sound = new Sound(), action) => {
       return sound
         .set("total", null)
         .set("step", 0)
-        .set("mode", payload.mode);
+        .set("mode", payload.mode)
+        .set("showOptions", false);
 
     case a.MODE_SHOW_RESULT:
       return sound.set("result", payload.result);
@@ -109,7 +113,7 @@ export default (sound = new Sound(), action) => {
     case a.MODE_HIDE_RESULT:
       return sound
         .set("result", null)
-        .set("intervals", null);
+        .set("options", null);
 
     case a.MODE_SHOW_SETTINGS:
       return sound.set("showSettings", true);
@@ -118,7 +122,7 @@ export default (sound = new Sound(), action) => {
       return sound
         .set("showSettings", false)
         .set("result", null)
-        .set("intervals", null);
+        .set("options", null);
 
     case a.MODE_SHOW_TOTAL:
       return sound.set("total", payload.result);
@@ -127,7 +131,11 @@ export default (sound = new Sound(), action) => {
       return sound.set("result", payload.result);
 
     case a.MODE_HIDE_TOTAL:
-      return sound.set("total", null).set("step", 0);
+      return sound
+        .set("total", null)
+        .set("step", 0)
+        .set("options", null)
+        .set("showOptions", false)
 
     case a.MODE_COUNT:
       return sound.set("counter", payload.count);
@@ -147,8 +155,8 @@ export default (sound = new Sound(), action) => {
     case a.SET_TOTAL:
       return sound.set("totalSteps", payload.value);
 
-    case a.MODE_SHOW_INTERVAL:
-      return sound.set("intervals", payload.intervals);
+    case a.MODE_HIGHLIGHT_OPTIONS:
+      return sound.set("options", payload.options);
 
     default:
       return sound;
