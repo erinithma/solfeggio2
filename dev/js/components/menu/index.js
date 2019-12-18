@@ -146,4 +146,8 @@ export default styled(ConnectedMenu)`
     .list {
         width: 100%;
     }
+
+    span {
+      font-size: 20px;
+    }
 `;
